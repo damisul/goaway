@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="midlet-common/src"/>
+	<classpathentry kind="src" path="midlet-full/src"/>
+	<classpathentry kind="src" path="midlet-light/src"/>
+	<classpathentry kind="src" path="common/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JRE-1.1"/>
+	<classpathentry kind="lib" path="/SharedLib/microemu/cldcapi11.jar"/>
+	<classpathentry kind="lib" path="/SharedLib/microemu/microemu-jsr-75.jar"/>
+	<classpathentry kind="lib" path="/SharedLib/microemu/midpapi20.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,64 @@
+(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]GE[life & death]SO[http://forum.kido.com.ru]
+RU[Japanese]SZ[13]KM[0.00]
+PW[White]PB[Black]AW[ea][fa][fb][kb][lb][mb][fc][hc][ic][jc][mc][gd][hd]AB[da][cb][eb][jb][ec][kc][lc][fd][id][jd][md][fe][ge][he][ke][le]
+(;B[gb]
+(;W[ib]
+;B[gc]C[RIGHT
+Best sequence for White])
+(;W[ha]
+;B[gc]
+;W[ga]
+;B[ka]
+;W[ib]
+;B[ja]SQ[ha]C[RIGHT
+White's dead
+Marked move was a mistake])
+(;W[hb]
+;B[ga]
+;W[gc]
+;B[ia]
+;W[ha]
+(;B[ka]
+;W[ib])
+(;B[ga]
+;W[ka]
+(;B[ma]LB[hb:A][ib:B]C[RIGHT
+Seki. White should play at B instead of A])
+(;B[la]LB[hb:A][ib:B]C[RIGHT
+Seki. White should play at B instead of A]))
+(;B[gb]
+;W[ka]
+(;B[la]LB[hb:A][ib:B]C[RIGHT
+Seki. White should play at B instead of A])
+(;B[ma]LB[hb:A][ib:B]C[RIGHT
+Seki. White should play at B instead of A]))))
+(;B[ka]
+;W[ib])
+(;B[ib]
+;W[hb]
+(;B[ka]
+;W[ia])
+(;B[ja]
+;W[ka])
+(;B[ia]
+;W[ha]))
+(;B[ia]
+;W[ib]
+(;B[ka]
+;W[ha])
+(;B[ja]
+;W[ha]))
+(;B[hb]
+;W[ib]
+(;B[ga]
+;W[gc]
+(;B[ia]
+;W[ja])
+(;B[ja]
+;W[ia]))
+(;B[ia]
+;W[ja]
+;B[ga]
+;W[gc])
+(;B[ha]
+;W[ja])))

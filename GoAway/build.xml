@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GoAway.Light" default="build" basedir=".">
+	<path id="microemu-cldc11">
+		<filelist dir="../SharedLib/microemu">
+			<file name="cldcapi11.jar"/>
+		</filelist>
+	</path>
+	<path id="microemu-cldc11">
+		<filelist dir="../SharedLib/microemu">
+			<file name="cldcapi11.jar"/>
+		</filelist>
+	</path>
+	<path id="microemu-midp20">
+		<filelist dir="../SharedLib/microemu">
+			<file name="midpapi20.jar"/>
+		</filelist>
+	</path>
+	
+	<target name="build">
+		<sequential>
+			<mkdir dir="./build/classes"/>
+			<javac source="1.2" target="1.2" srcdir="../" destdir="./build/classes"  >
+				<include name="Common/src/"/>
+				<include name="MidletCommon/src/"/>
+				<include name="GoAwayLight/src/"/>
+				<classpath>
+					<path refid="microemu-midp20"/>
+					<path refid="microemu-cldc11"/>
+				</classpath>
+			</javac>
+			<jar destfile="./build/GoAwayLight.jar" manifest="./src/MANIFEST.MF">
+				<fileset dir="./build/classes">
+					<include name="**/*.class"/>
+				</fileset>
+				<fileset dir="../MidletCommon/res"/>
+				<fileset dir="./res"/>
+			</jar>
+		</sequential>
+	</target>
+		
+	<target name="run" depends="build">
+		<java fork="true" jar="/home/damir/opt/microemu-2.0.4/./build/GoAwayLight.jar"></java>
+	</target>
+</project>
