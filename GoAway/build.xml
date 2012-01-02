@@ -73,7 +73,16 @@ MIDlet-Jar-URL: @{name}.jar
 	<macrodef name="runMidlet">
 		<attribute name="name"/>
 		<sequential>
-			<java fork="true" jar="${path.microemu}/microemulator.jar" dir="build">
+			<java fork="true" 
+				dir="build" 
+				classname="org.microemu.app.Main">
+				<classpath>
+					<filelist dir="${path.microemu}">
+						<file name="microemulator.jar"/>
+						<file name="devices/microemu-device-large.jar"/>
+					</filelist>
+				</classpath>
+				<arg line="--device org/microemu/device/large/device.xml"/>
 				<arg value="@{name}.jad"/>
 			</java>
 		</sequential>

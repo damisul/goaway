@@ -66,7 +66,11 @@ public class Rectangle {
 	}
 	
 	public boolean contain(Point pt) {
-		return pt.x >= minX && pt.y >= minY && pt.x <= maxX && pt.y <= maxY;
+		return contain(pt.x, pt.y);
+	}
+	
+	public boolean contain(int x, int y) {
+		return x >= minX && y >= minY && x <= maxX && y <= maxY;
 	}
 	
 	public void move(int dx, int dy) {

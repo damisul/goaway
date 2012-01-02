@@ -31,8 +31,6 @@ import ru.goproject.goaway.exception.GoAwayException;
 public class GobanCanvas extends Canvas implements CommandListener, ProblemsCollectionEventListener {
 	/**
 	 * Color constants
-	 */
-	/**
 	 * Color of black stone and lines
 	 */
 	private final static int COLOR_BLACK = 0x00000000;
@@ -64,7 +62,7 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 	
 	private final static String RES_NOTIFY_SOLVED = "GobanCanvas.solved";
 	private final static String RES_NOTIFY_WRONG = "GobanCanvas.wrong";
-	
+
 	private final static String RES_PROBLEM_LOADING = "GobanCanvas.problemLoading";
 	private final static String RES_DAMAGED_FILE = "GobanCanvas.damagedFile";
 	
@@ -142,38 +140,55 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 	}
 	
 	protected void keyPressed(int code) {
-		// MidletUtils.showMessage("keyPressed", String.valueOf(code));
-		if ((code == KEY_NUM2 || code == -1) && cursor.y > 0) {
+		int gameAction = getGameAction(code);
+		if ((code == KEY_NUM2 || gameAction == UP) && cursor.y > 0) {
 			// up
 			moveCursor(0, -1);			
-		} else if ((code == KEY_NUM4 || code == -3) && cursor.x > 0) {
+		} else if ((code == KEY_NUM4 || gameAction == LEFT) && cursor.x > 0) {
 			// left
 			moveCursor(-1, 0);
-		} if ((code == KEY_NUM6 || code == -4) && cursor.x < gobanSize - 1) {
+		} if ((code == KEY_NUM6 || gameAction == RIGHT) && cursor.x < gobanSize - 1) {
 			// right
 			moveCursor(1, 0);
-		} else if ((code == KEY_NUM8 || code == -2) &&  cursor.y < gobanSize - 1) {
+		} else if ((code == KEY_NUM8 || gameAction == DOWN) &&  cursor.y < gobanSize - 1) {
 			// down
 			moveCursor(0, 1);
-		} else if (code == KEY_NUM5 || code == -5 || code == 57 /* nokia */ || code == 42 /* nokia */) {
-			if (problem != null && goban.isMoveAllowed(cursor, problem.playerColor)) {
-				try {
-					problemNavigator.move(cursor);
-				} catch (GoAwayException e) {
-					MidletUtils.showError(e);
-					damagedProblem = true;
-				}
-				initNode();
-			}
-		} else if ((code == KEY_NUM1 || code == 55/* nokia */) && (canvasRect.getWidth() < gobanSize || canvasRect.getHeight() < gobanSize)) {
+		} else if (code == KEY_NUM5 || gameAction == FIRE) {
+			doMoveAtCursor();
+		} else if (code == KEY_NUM1 && (canvasRect.getWidth() < gobanSize || canvasRect.getHeight() < gobanSize)) {
 			zoom(cellSize - 2);
-		} else if (code == KEY_NUM3 || code == 35/* nokia */) {
+		} else if (code == KEY_NUM3) {
 			zoom(cellSize + 2);
 		} else {
 			super.keyPressed(code);
 		}
 		repaint();
 	}
+	
+	private void doMoveAtCursor() {
+		if (problem != null && goban.isMoveAllowed(cursor, problem.playerColor)) {
+			try {
+				problemNavigator.move(cursor);
+			} catch (GoAwayException e) {
+				MidletUtils.showError(e);
+				damagedProblem = true;
+			}
+			initNode();
+		}
+	}
+	
+	protected void pointerPressed(int x, int y) {
+		super.pointerPressed(x, y);
+		x = getGobanX(x);
+		y = getGobanY(y);
+		if (canvasRect.contain(x, y)) { 
+			cursor.x = x;
+			cursor.y = y;
+			moveCursor(0, 0);
+			doMoveAtCursor();
+			repaint();
+		}
+	}	
 	
 	private void drawMessages(Graphics g, String[] messages) {
 		g.setColor(COLOR_BLACK);
@@ -260,6 +275,14 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 	
 	private int getCanvasY(int gobanY) {
 		return yOffset + (gobanY - canvasRect.minY) * cellSize + stoneRadius;
+	}
+	
+	private int getGobanX(int canvasX) {
+		return (canvasX - xOffset)/cellSize + canvasRect.minX;
+	}
+	
+	private int getGobanY(int canvasY) {
+		return (canvasY - yOffset)/cellSize + canvasRect.minY;
 	}
 	
 	private void drawLabels(Graphics g, Node current) {
