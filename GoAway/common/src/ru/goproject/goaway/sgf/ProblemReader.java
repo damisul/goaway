@@ -107,7 +107,7 @@ public class ProblemReader {
 		// COMPATIBILITY
 		// Во многих файлах задач встречаются пустые узлы. Их просто пропускаем.
 		while (reader.getCurrentChar() == ';') {			
-			reader.next();;
+			reader.next();
 			reader.skipBlanks();
 		}
 		Hashtable props = new Hashtable();
@@ -330,7 +330,7 @@ public class ProblemReader {
 			y = st.charAt(1) - 'a'; 
 		
 		if (x > problem.getSize() || x < 0 || y > problem.getSize() || y < 0) {
-			throw new ParseError("Point is out of board: " + st);
+			throw new ParseError("Point is outside of the board: " + st);
 		}
 		return new Point(x, y);
 	}
