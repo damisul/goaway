@@ -32,9 +32,9 @@
 		<attribute name="midletClass"/>
 		<sequential>
 			<jar destfile="build/@{midletModuleName}/@{name}.jar">
-				<fileset dir="./build/common/classes"/>
-				<fileset dir="./build/midlet-common/classes"/>
-				<fileset dir="./build/@{midletModuleName}/classes"/>
+				<fileset dir="build/common/classes"/>
+				<fileset dir="build/midlet-common/classes"/>
+				<fileset dir="build/@{midletModuleName}/classes"/>
 				<fileset dir="midlet-common/res"/>
 				<fileset dir="@{midletModuleName}/res"/>
 				<manifest>
@@ -57,7 +57,25 @@
 				-allowaccessmodification
 				-microedition
 				-keep public class @{midletClass}
-			</proguard>			
+			</proguard>
+			<length file="build/@{name}.jar" property="fileSize"/>
+			<echo file="build/@{name}.jad">MIDlet-Vendor: ${goaway.vendor}
+MIDlet-Version: ${goaway.version}
+MIDlet-Name: @{name}
+MIDlet-1: @{name},,@{midletClass}
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0
+MIDlet-Jar-Size: ${fileSize}
+MIDlet-Jar-URL: @{name}.jar
+</echo>
+		</sequential>
+	</macrodef>
+	<macrodef name="runMidlet">
+		<attribute name="name"/>
+		<sequential>
+			<java fork="true" jar="${path.microemu}/microemulator.jar" dir="build">
+				<arg value="@{name}.jad"/>
+			</java>
 		</sequential>
 	</macrodef>
 	
@@ -104,8 +122,10 @@
 	<target name="build" depends="buildMidletLight, buildMidletFull"/>
 	
 	<target name="runLight" depends="buildMidletLight">
-		<java fork="true" jar="${path.microemu}/microemulator.jar">
-			<arg value="build/GoAwayLight.jar"/>
-		</java>
+		<runMidlet name="${goaway.name.light}"/>
+	</target>
+	
+	<target name="runFull" depends="buildMidletFull">
+		<runMidlet name="${goaway.name.full}"/>
 	</target>
 </project>
