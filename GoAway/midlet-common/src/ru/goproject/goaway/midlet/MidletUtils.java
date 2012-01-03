@@ -16,10 +16,6 @@ public class MidletUtils {
 	public static void show(Displayable displayable) {
 		display.setCurrent(displayable);
 	}
-
-	public static boolean isVisible(Displayable d) {
-		return display.getCurrent() == d;
-	}	
 	
 	public static String getAppName() {
 		return midlet.getAppProperty("MIDlet-Name") 

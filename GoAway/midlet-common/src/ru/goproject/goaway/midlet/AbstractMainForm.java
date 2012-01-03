@@ -15,6 +15,7 @@ public class AbstractMainForm extends Form implements CommandListener {
 	private final static String RES_COPYRIGHT = "MainForm.copyright";
 	private final static String RES_HOMEPAGE = "MainForm.homepage";
 	private final static String HOMEPAGE_ADDRESS = " http://goaway.goproject.ru";
+	private final static String RES_EMPTY_COLLECTION = "MainForm.emptyCollection";
 
 	private static Command cmdSolveProblems;
 	private static Command cmdExit;
@@ -27,8 +28,8 @@ public class AbstractMainForm extends Form implements CommandListener {
 		super(LocalizedStrings.getResource(RES_TITLE));
 		this.midlet = midlet;
 		
-		cmdSolveProblems = new Command(LocalizedStrings.getResource(RES_CMD_SOLVE_PROBLEMS), Command.BACK, 1);
-		cmdExit = new Command(LocalizedStrings.getResource(RES_CMD_EXIT), Command.STOP, 3);
+		cmdSolveProblems = new Command(LocalizedStrings.getResource(RES_CMD_SOLVE_PROBLEMS), Command.SCREEN, 1);
+		cmdExit = new Command(LocalizedStrings.getResource(RES_CMD_EXIT), Command.SCREEN, 3);
 
 		addCommand(cmdSolveProblems);
 		addCommand(cmdExit);
@@ -41,8 +42,13 @@ public class AbstractMainForm extends Form implements CommandListener {
 	}
 
 	public void commandAction(Command cmd, Displayable d) {
-		if (cmd == cmdSolveProblems) {			
-			MidletUtils.show(canvas);
+		if (cmd == cmdSolveProblems) {
+			if (collection.size() == 0) {
+				MidletUtils.showLocalizedMessage(CommonStrings.RES_ERROR, RES_EMPTY_COLLECTION);
+			} else {
+				canvas.requestProblem();
+				MidletUtils.show(canvas);
+			}
 		} else if (cmd == cmdExit) {
 			try {				 
 				midlet.destroyApp(false);

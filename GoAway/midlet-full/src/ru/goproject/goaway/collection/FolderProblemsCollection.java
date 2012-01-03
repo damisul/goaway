@@ -38,15 +38,10 @@ public class FolderProblemsCollection extends FileSystemProblemsCollection {
 		try {
 			fc = (FileConnection)Connector.open(folder, Connector.READ);
 			Enumeration list = fc.list("*.*", false);
-			int i = 0;
 			while (list.hasMoreElements()) {
 				String fileName = (String)list.nextElement();
 				if (fileName.toLowerCase().endsWith(".sgf")) {
-					++i;
 					files.addElement(fileName);
-					if (i % LOADING_NOTIFICTION_STEP == 0) {
-						loadingListener.onCollectionPartLoaded(i);
-					}
 				}
 			}			
 		} finally {

@@ -26,7 +26,6 @@ import ru.goproject.goaway.exception.GoAwayException;
 
 /**
  * GobanCanvas is responsible for drawing of go board and additional problem-related info
- * @author damir
  */
 public class GobanCanvas extends Canvas implements CommandListener, ProblemsCollectionEventListener {
 	/**
@@ -86,7 +85,7 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 	private Goban goban;
 	private ProblemNavigator problemNavigator;
 
-	private Font boardFont;
+	private Font boardFont = FONT_MEDIUM;
 	private int cellSize;
 	private int stoneRadius;
 	
@@ -119,16 +118,16 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 	public GobanCanvas(Displayable parent) {
 		problemNavigator = new ProblemNavigator();
 		this.parent = parent;
-		cmdUndo = new Command(LocalizedStrings.getResource(RES_CMD_UNDO), Command.BACK, 1);
+		cmdUndo = new Command(LocalizedStrings.getResource(RES_CMD_UNDO), Command.SCREEN, 1);
 		cmdComment = new Command(LocalizedStrings.getResource(RES_CMD_COMMENT), Command.SCREEN, 2);
 		cmdNext = new Command(LocalizedStrings.getResource(RES_CMD_NEXT), Command.SCREEN, 3);
 		cmdPrevious = new Command(LocalizedStrings.getResource(RES_CMD_PREVIOUS), Command.SCREEN, 4);
 		cmdRandom = new Command(LocalizedStrings.getResource(RES_CMD_RANDOM), Command.SCREEN, 5);
 		cmdSelectProblem = new Command(LocalizedStrings.getResource(RES_CMD_SELECT_PROBLEM), Command.SCREEN, 6);
 		cmdShowHints = new Command(LocalizedStrings.getResource(RES_CMD_SHOW_HINTS), Command.SCREEN, 7);
-		cmdHideHints = new Command(LocalizedStrings.getResource(RES_CMD_HIDE_HINTS), Command.SCREEN, 7);
-		cmdInfo = new Command(LocalizedStrings.getResource(ProblemInfoForm.TITLE), Command.SCREEN, 8);
-		cmdMainMenu = new Command(LocalizedStrings.getResource(AbstractMainForm.RES_TITLE), Command.SCREEN, 9);
+		cmdHideHints = new Command(LocalizedStrings.getResource(RES_CMD_HIDE_HINTS), Command.SCREEN, 8);
+		cmdInfo = new Command(LocalizedStrings.getResource(ProblemInfoForm.TITLE), Command.ITEM, 9);
+		cmdMainMenu = new Command(LocalizedStrings.getResource(AbstractMainForm.RES_TITLE), Command.SCREEN, 10);
 		
 		setCommandListener(this);
 		addCommand(cmdNext);
@@ -142,16 +141,12 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 	protected void keyPressed(int code) {
 		int gameAction = getGameAction(code);
 		if ((code == KEY_NUM2 || gameAction == UP) && cursor.y > 0) {
-			// up
 			moveCursor(0, -1);			
 		} else if ((code == KEY_NUM4 || gameAction == LEFT) && cursor.x > 0) {
-			// left
 			moveCursor(-1, 0);
 		} if ((code == KEY_NUM6 || gameAction == RIGHT) && cursor.x < gobanSize - 1) {
-			// right
 			moveCursor(1, 0);
 		} else if ((code == KEY_NUM8 || gameAction == DOWN) &&  cursor.y < gobanSize - 1) {
-			// down
 			moveCursor(0, 1);
 		} else if (code == KEY_NUM5 || gameAction == FIRE) {
 			doMoveAtCursor();
@@ -184,7 +179,6 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 		if (canvasRect.contain(x, y)) { 
 			cursor.x = x;
 			cursor.y = y;
-			moveCursor(0, 0);
 			doMoveAtCursor();
 			repaint();
 		}
@@ -199,7 +193,7 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 					messages[i],
 					getWidth()/2,
 					y,
-					Graphics.BASELINE | Graphics.HCENTER
+					Graphics.BASELINE// | Graphics.HCENTER
 				);
 			y += letterHeight + 2;
 		}
@@ -207,7 +201,6 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 
 	protected void paint(Graphics g) {
 		try {
-		
 			g.setColor(COLOR_BOARD);
 			g.fillRect(0, 0, getWidth(), getHeight());
 			String[] msg = null;
@@ -489,7 +482,7 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 	}
 		
 	private void showComment() {
-		if (problemNavigator.getCurrentNode().getComment() != null && MidletUtils.isVisible(this)) {
+		if (problemNavigator.getCurrentNode().getComment() != null) {
 			MidletUtils.showMessage(
 				LocalizedStrings.getResource(RES_CMD_COMMENT),
 				problemNavigator.getCurrentNode().getComment()

@@ -41,7 +41,7 @@
 					<attribute name="MIDlet-Vendor" value="${goaway.vendor}"/>
 					<attribute name="MIDlet-Version" value="${goaway.version}"/>
 					<attribute name="MIDlet-Name" value="@{name}"/>
-					<attribute name="MIDlet-1" value="@{name},,@{midletClass}"/>
+					<attribute name="MIDlet-1" value="@{name},icon.png,@{midletClass}"/>					
 					<attribute name="MicroEdition-Configuration" value="CLDC-1.1"/>
 					<attribute name="MicroEdition-Profile" value="MIDP-2.0"/>
 				</manifest>
@@ -58,11 +58,12 @@
 				-microedition
 				-keep public class @{midletClass}
 			</proguard>
+			<!--copy file="build/@{midletModuleName}/@{name}.jar" todir="build"/-->
 			<length file="build/@{name}.jar" property="fileSize"/>
 			<echo file="build/@{name}.jad">MIDlet-Vendor: ${goaway.vendor}
 MIDlet-Version: ${goaway.version}
 MIDlet-Name: @{name}
-MIDlet-1: @{name},,@{midletClass}
+MIDlet-1: @{name},icon.png,@{midletClass}
 MicroEdition-Configuration: CLDC-1.1
 MicroEdition-Profile: MIDP-2.0
 MIDlet-Jar-Size: ${fileSize}
@@ -81,6 +82,7 @@ MIDlet-Jar-URL: @{name}.jar
 						<file name="microemulator.jar"/>
 						<file name="devices/microemu-device-large.jar"/>
 					</filelist>
+					<path refid="jsr-75"/>
 				</classpath>
 				<arg line="--device org/microemu/device/large/device.xml"/>
 				<arg value="@{name}.jad"/>
@@ -126,6 +128,18 @@ MIDlet-Jar-URL: @{name}.jar
 		</path>
 		<compileModule name="midlet-full" classpathrefid="cp"/>
 		<buildMidletJar midletclass="ru.goproject.goaway.midlet.GoAwayMidlet" midletmodulename="midlet-full" name="${goaway.name.full}"/>		
+	</target>
+	
+	<target name="buildAndroid" depends="buildMidletFull">
+		<copy file="build/${goaway.name.full}.jad" todir="${path.microemu-android}" overwrite="true"/>
+		<copy file="build/${goaway.name.full}.jar" todir="${path.microemu-android}" overwrite="true"/>
+		<!--
+		<property name="sdk-folder" value="${path.android.sdk}"/>
+		<property name="midlet.jad" value="${goaway.name.full}.jad"/>
+		<property name="midlet.package" value="${goaway.name.full}.apk"/>
+		-->
+		<ant dir="${path.microemu-android}" inheritall="false"/>
+		<copy file="${path.microemu-android}/bin/${goaway.name.full}.apk" todir="build" overwrite="true"/>
 	</target>
 	
 	<target name="build" depends="buildMidletLight, buildMidletFull"/>

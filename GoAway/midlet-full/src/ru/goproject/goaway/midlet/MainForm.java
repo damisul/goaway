@@ -6,7 +6,6 @@ import javax.microedition.lcdui.Displayable;
 import ru.goproject.goaway.collection.FileSystemProblemsCollection;
 import ru.goproject.goaway.collection.FolderProblemsCollection;
 import ru.goproject.goaway.collection.SingleFileProblemsCollection;
-import ru.goproject.goaway.util.CollectionLoadingForm;
 
 public class MainForm extends AbstractMainForm {
 	private static Command cmdSettings;
@@ -20,7 +19,6 @@ public class MainForm extends AbstractMainForm {
 	}
 
 	public void applySettings(Settings settings, boolean keepProblemIndex) {
-		FileSystemProblemsCollection oldCollection = (FileSystemProblemsCollection)collection;
 		if (settings.getCollectionType() == Settings.COLLECTION_SINGLEFILE) {
 			SingleFileProblemsCollection sfpc;
 			if (collection != null && (collection instanceof SingleFileProblemsCollection)) {
@@ -42,22 +40,18 @@ public class MainForm extends AbstractMainForm {
 		}
 		
 		FileSystemProblemsCollection collection = (FileSystemProblemsCollection)this.collection;
-		if (oldCollection != collection) {
-			collection.setEventListener(canvas);
-			canvas.setProblemsCollection(collection);
-			canvas.requestProblem();
-		}
+		collection.setEventListener(canvas);
+		canvas.setProblemsCollection(collection);
+
 		if (collection.isRefreshNeeded()) {
 			if (keepProblemIndex) {
 				canvas.setProblemIndex(settings.getProblemIndex());				
 			} else {
 				canvas.setProblemIndex(0);
 			}
-			CollectionLoadingForm f = new CollectionLoadingForm(this);
-			collection.setLoadingListener(f);
-			MidletUtils.show(f);
 			collection.refresh();
 		}
+		canvas.requestProblem();
 		MidletUtils.show(this);
 	}
 

@@ -11,6 +11,7 @@ MainForm.cmdSolveProblems:до задач
 MainForm.cmdExit:Вихід
 MainForm.copyright:(c)2008 Дамір Султанбеков 
 MainForm.homepage:Сайт
+MainForm.emptyCollection:No problems in collection
 
 ;Гобан
 GobanCanvas.cmdNext:Наступна

@@ -50,7 +50,6 @@ public class SingleFileProblemsCollection extends FileSystemProblemsCollection {
 
 			FilePos filePos = reader.getFilePos();
 			int braceCount = 0;
-			int i = 0;
 			while (!reader.isEof()) {
 				do {
 					char c = reader.getCurrentChar();
@@ -71,10 +70,6 @@ public class SingleFileProblemsCollection extends FileSystemProblemsCollection {
 					throw new GoAwayException("Unexpected end of file: ')' expected");
 				}
 				files.addElement(filePos);
-				++i;
-				if (i % LOADING_NOTIFICTION_STEP == 0) {
-					loadingListener.onCollectionPartLoaded(i);
-				}
 				reader.skipBlanks();
 				if (reader.isReady()) {
 					filePos = reader.getFilePos();

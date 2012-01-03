@@ -37,11 +37,11 @@ public class FileSystemChooser extends List implements CommandListener {
 		this.settingsForm = settingsForm;
 		this.fileMask = fileMask;
 		setCommandListener(this);
-		cmdOk = new Command(LocalizedStrings.getResource(CommonStrings.RES_OK), Command.BACK, 1);
-		cmdOpen = new Command(LocalizedStrings.getResource(RES_CMD_OPEN), Command.OK, 1);
+		cmdOk = new Command(LocalizedStrings.getResource(CommonStrings.RES_OK), Command.SCREEN, 1);
+		cmdOpen = new Command(LocalizedStrings.getResource(RES_CMD_OPEN), Command.SCREEN, 2);
 		pathEntries = new Vector();
 		addCommand(cmdOk);
-		//addCommand(cmdOpen);
+		addCommand(cmdOpen);
 		setSelectCommand(cmdOpen);
 		loadList(ROOT);
 	}
