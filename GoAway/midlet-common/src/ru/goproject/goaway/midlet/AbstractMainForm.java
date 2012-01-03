@@ -19,7 +19,7 @@ public abstract class AbstractMainForm extends Form implements CommandListener {
 	private final static String HOMEPAGE_ADDRESS = " http://goaway.goproject.ru";
 
 	private final static String RECORDSTORE_NAME = "GoAway.Settings";
-	protected final static int RECORDSTORE_POS_PROBLEM_INDEX = 0;
+	protected final static int RECORDSTORE_POS_PROBLEM_INDEX = 1;
 
 	private static Command cmdSolveProblems;
 	private static Command cmdExit;
@@ -78,8 +78,12 @@ public abstract class AbstractMainForm extends Form implements CommandListener {
 		}
 	}
 
-	private RecordStore getSettingsStore() throws RecordStoreException  {
-		return RecordStore.openRecordStore(RECORDSTORE_NAME, true);
+	private RecordStore getSettingsStore() throws RecordStoreException {
+		RecordStore rs = RecordStore.openRecordStore(RECORDSTORE_NAME, true);
+		if (rs.getNumRecords() == 0) {
+			initRecordStore(rs);
+		}
+		return rs;
 	}
 
 	private static void closeQuietly(RecordStore rs) {
@@ -93,7 +97,7 @@ public abstract class AbstractMainForm extends Form implements CommandListener {
 	}
 
 	public void writeSettingsToStore(RecordStore rs) throws RecordStoreException {
-		int problemIndex = collection.getCurrentIndex();
+		int problemIndex = canvas.getProblemIndex();
 		rs.setRecord(RECORDSTORE_POS_PROBLEM_INDEX, MidletUtils.intToByteArray(problemIndex), 0, 4);
 	}
 	
@@ -102,6 +106,7 @@ public abstract class AbstractMainForm extends Form implements CommandListener {
 		try {
 			problemIndex = MidletUtils.byteArrayToInt(rs.getRecord(RECORDSTORE_POS_PROBLEM_INDEX));
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		canvas.setProblemIndex(problemIndex);
 	}
@@ -117,5 +122,9 @@ public abstract class AbstractMainForm extends Form implements CommandListener {
 		}
 	}
 	
-	protected abstract ProblemsCollection restoreCollection(RecordStore rs);	
+	protected abstract ProblemsCollection restoreCollection(RecordStore rs);
+	
+	protected void initRecordStore(RecordStore rs) throws RecordStoreException {
+		rs.addRecord(new byte[] {0, 0, 0, 0}, 0, 4);
+	}
 }

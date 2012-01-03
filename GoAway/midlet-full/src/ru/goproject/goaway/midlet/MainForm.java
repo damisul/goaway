@@ -69,4 +69,10 @@ public class MainForm extends AbstractMainForm {
 		byte[] data = col.getPath() == null ? new byte[] {} : col.getPath().getBytes();
 		rs.setRecord(RECORDSTORE_POS_PATH, data, 0, data.length);
 	}
+
+	protected void initRecordStore(RecordStore rs) throws RecordStoreException {
+		super.initRecordStore(rs);
+		rs.addRecord(new byte[] { FileSystemProblemsCollection.TYPE_FOLDER }, 0, 1);
+		rs.addRecord(new byte[] { }, 0, 0);
+	}
 }

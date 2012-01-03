@@ -9,7 +9,6 @@ public abstract class FileSystemProblemsCollection extends ProblemsCollection {
 	protected String path;
 
 	public void refresh() {
-		currentIndex = 0;
 		clear();
 		Thread t = new Thread() {
 			public void run() {
