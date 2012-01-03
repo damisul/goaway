@@ -13,44 +13,33 @@ import ru.goproject.goaway.sgf.ProblemReader;
 
 
 public class FolderProblemsCollection extends FileSystemProblemsCollection {
-	private String folder;
-	private Vector files = new Vector();
-	public String getFolder() {
-		return folder;
-	}
+	private final Vector files = new Vector();
 
-	public void setFolder(final String folder) {
-		if (!folder.equals(this.folder)) {
-			this.folder = folder;
-			refreshNeeded = true;
-		}		
+	protected void clear() {
+		files.removeAllElements();
 	}
-
+	
 	public int size() {
 		return files.size();
 	}
 
 	protected void loadCollectionContents() throws Exception {
-		if (folder == null || "".equals(folder)) {
+		if (path == null || "".equals(path)) {
 			return;
 		}
 		FileConnection fc = null;
 		try {
-			fc = (FileConnection)Connector.open(folder, Connector.READ);
+			fc = (FileConnection)Connector.open(path, Connector.READ);
 			Enumeration list = fc.list("*.*", false);
 			while (list.hasMoreElements()) {
 				String fileName = (String)list.nextElement();
 				if (fileName.toLowerCase().endsWith(".sgf")) {
 					files.addElement(fileName);
 				}
-			}			
+			}
 		} finally {
 			FileSystemUtils.closeFileConnection(fc);
 		}
-	}
-
-	protected void clear() {
-		files.removeAllElements();
 	}
 
 	public String getProblemTitle(int problemIndex) {
@@ -62,7 +51,7 @@ public class FolderProblemsCollection extends FileSystemProblemsCollection {
 		String fileName = (String)files.elementAt(index);
 		InputStream stream = null;
 		try {
-			fc =(FileConnection) Connector.open(folder + fileName, Connector.READ);
+			fc =(FileConnection) Connector.open(path + fileName, Connector.READ);
 			stream = fc.openInputStream();
 			return ProblemReader.readProblem(stream);
 		} finally {
@@ -71,5 +60,9 @@ public class FolderProblemsCollection extends FileSystemProblemsCollection {
 			}
 			FileSystemUtils.closeFileConnection(fc);
 		}
+	}
+
+	public int getType() {
+		return TYPE_FOLDER;
 	}
 }

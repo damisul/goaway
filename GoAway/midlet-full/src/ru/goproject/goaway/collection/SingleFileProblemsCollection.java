@@ -13,37 +13,29 @@ import ru.goproject.goaway.util.FilePos;
 import ru.goproject.goaway.util.SmartReader;
 
 public class SingleFileProblemsCollection extends FileSystemProblemsCollection {
-	private Vector files = new Vector();
-	private String fileName;
+	private final Vector files = new Vector();
 	private String shortFileName;
-	
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		if (!fileName.equals(this.fileName)) {
-			this.fileName = fileName;
-			refreshNeeded = true;
-		}
-	}
 
 	protected void clear() {
 		files.removeAllElements();		
 	}
 
+	public int size() {
+		return files.size();
+	}
+	
 	public String getProblemTitle(int problemIndex) {
 		return shortFileName + " [" + Integer.toString(problemIndex + 1) + "/" + size() + "]";
 	}
 
 	protected void loadCollectionContents() throws Exception {
 		FileConnection fc = null;
-		if ("".equals(fileName)) {
+		if ("".equals(path)) {
 			return;
 		}
 		
 		try {
-			fc = (FileConnection)Connector.open(fileName, Connector.READ);
+			fc = (FileConnection)Connector.open(path, Connector.READ);
 			SmartReader reader = new SmartReader(fc.openInputStream(), ProblemReader.RAW_ENCODING);
 			// Перед первой задачей может идти заголовок коллекции, пропускаем его
 			reader.readTill('(');
@@ -86,7 +78,7 @@ public class SingleFileProblemsCollection extends FileSystemProblemsCollection {
 	protected Problem loadProblem(int index) throws Exception {
 		FileConnection fc = null;
 		try {
-			fc = (FileConnection)Connector.open(fileName, Connector.READ);
+			fc = (FileConnection)Connector.open(path, Connector.READ);
 			shortFileName = fc.getName();
 			System.out.println(shortFileName);
 			FilePos filePos = (FilePos)files.elementAt(index);
@@ -100,8 +92,8 @@ public class SingleFileProblemsCollection extends FileSystemProblemsCollection {
 		}		
 	}
 
-	public int size() {
-		return files.size();
+	public int getType() {
+		return TYPE_SINGLEFILE;
 	}
 
 }

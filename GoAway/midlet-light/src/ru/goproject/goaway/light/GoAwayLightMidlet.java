@@ -8,12 +8,6 @@ public class GoAwayLightMidlet extends AbstractMidlet {
 		return new LightMainForm(this);
 	}
 
-	protected void saveSettings() {
-		Settings settings = Settings.getInstance();
-		settings.setProblemIndex(mainForm.getProblemIndex());		
-		Settings.saveSettings();
-	}
-
 	protected String[] getLocalizationBasenames() {
 		return new String[] {"i18n"};
 	}

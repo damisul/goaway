@@ -3,12 +3,11 @@ package ru.goproject.goaway.collection;
 import ru.goproject.goaway.common.Problem;
 
 public abstract class FileSystemProblemsCollection extends ProblemsCollection {
-	protected boolean refreshNeeded = true;
-
-	public boolean isRefreshNeeded() {
-		return refreshNeeded;
-	}
+	public final static int TYPE_FOLDER = 0;
+	public final static int TYPE_SINGLEFILE = 1;
 	
+	protected String path;
+
 	public void refresh() {
 		currentIndex = 0;
 		clear();
@@ -16,10 +15,10 @@ public abstract class FileSystemProblemsCollection extends ProblemsCollection {
 			public void run() {
 				try {
 					loadCollectionContents();
-					refreshNeeded = false;
+					eventListener.onCollectionLoaded();
 				} catch (Exception e) {
-					e.printStackTrace();
 					clear();
+					eventListener.onProblemLoadingFailed(e);
 				}
 			}
 		};
@@ -44,9 +43,20 @@ public abstract class FileSystemProblemsCollection extends ProblemsCollection {
 		};
 		t.start();
 	}
+	
+	public String getPath() {
+		return path;
+	}
 
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
 	protected abstract void loadCollectionContents() throws Exception;
 
 	protected abstract Problem loadProblem(int index) throws Exception;
-
+	
+	public abstract int getType();
+	
+	protected abstract void clear();
 }

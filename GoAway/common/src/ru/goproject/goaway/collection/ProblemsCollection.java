@@ -16,5 +16,6 @@ public abstract class ProblemsCollection {
 	public abstract void requestProblem(int problemIndex);
 	public abstract int size();
 	public abstract String getProblemTitle(int problemIndex);
-	protected abstract void clear();	
+	public abstract void refresh();
+	
 }

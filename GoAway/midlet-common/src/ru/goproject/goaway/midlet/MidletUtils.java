@@ -24,6 +24,7 @@ public class MidletUtils {
 	}
 	
 	public static void showError(Exception e) {
+		e.printStackTrace();
 		showMessage(LocalizedStrings.getResource(CommonStrings.RES_ERROR), e.getMessage());
 	}
 	
@@ -37,4 +38,21 @@ public class MidletUtils {
 	public static void showLocalizedMessage(String titleId, String messageId) {
 		showMessage(LocalizedStrings.getResource(titleId), LocalizedStrings.getResource(messageId));
 	}
+	
+	public static byte[] intToByteArray(int value) {
+		return new byte[] {
+			(byte)(value >>> 24),
+			(byte)(value >>> 16),
+			(byte)(value >>> 8),
+			(byte)value
+		};
+	}
+
+	public static int byteArrayToInt(byte [] b) {
+		return (b[0] << 24) 
+			| ((b[1] & 0xFF) << 16) 
+			| ((b[2] & 0xFF) << 8)
+			| (b[3] & 0xFF);
+	}
+	
 }

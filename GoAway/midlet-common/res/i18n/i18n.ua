@@ -11,7 +11,6 @@ MainForm.cmdSolveProblems:до задач
 MainForm.cmdExit:Вихід
 MainForm.copyright:(c)2008 Дамір Султанбеков 
 MainForm.homepage:Сайт
-MainForm.emptyCollection:No problems in collection
 
 ;Гобан
 GobanCanvas.cmdNext:Наступна
@@ -26,6 +25,8 @@ GobanCanvas.solved:Вирішено!
 GobanCanvas.wrong:Помилка!
 GobanCanvas.damagedFile:Невірний формат файлу
 GobanCanvas.problemLoading:Завантажується задача...
+GobanCanvas.emptyCollection:No problems in collection
+GobanCanvas.loadingCollection:Завантажується колекція...
 
 ;Інформація про задачу
 Info.title:Інформація

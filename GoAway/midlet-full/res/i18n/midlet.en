@@ -3,15 +3,8 @@ Settings.title:Settings
 Settings.cmdOpenFolder:Open
 Settings.collectionFolder:Folder
 Settings.collectionFileName:File
-Settings.cmdChangePath:Change
+Settings.cmdChangePath:Change path
 Settings.collectionType:Collection type
 Settings.collectionTypeFolder:Folder
 Settings.collectionTypeSingleFile:Single file
 Settings.defaultEncoding:Default encoding
-
-
-LoadingForm.title:Loading collection...
-LoadingForm.emptyCollection:Collection is empty
-LoadingForm.collectionError:Collection loading error
-LoadingForm.problemsFound:Found: 
-

@@ -4,17 +4,19 @@ import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
 public abstract class AbstractMidlet extends MIDlet {
+	private final static String DEFAULT_LANG = "en";	
+	
 	protected AbstractMainForm mainForm;
 	public AbstractMidlet() {
 		MidletUtils.init(this);
 	}	
 
 	protected final void destroyApp(boolean unconditional) throws MIDletStateChangeException {
-		saveSettings();
+		mainForm.saveSettings();
 	}
 	
 	protected final void pauseApp() {
-		saveSettings();
+		mainForm.saveSettings();
 	}
 
 	protected final void startApp() throws MIDletStateChangeException {		
@@ -24,7 +26,7 @@ public abstract class AbstractMidlet extends MIDlet {
 			if (locale != null) {
 				locale = locale.substring(0, 2);
 			} else {
-				locale = MidletSettings.DEFAULT_LANG;
+				locale = DEFAULT_LANG;
 			}
 			try {
 				LocalizedStrings.getInstance().loadStrings(locale, getLocalizationBasenames());
@@ -38,6 +40,4 @@ public abstract class AbstractMidlet extends MIDlet {
 	protected abstract AbstractMainForm createMainForm();
 	
 	protected abstract String[] getLocalizationBasenames();
-	
-	protected abstract void saveSettings();
 }

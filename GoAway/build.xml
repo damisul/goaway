@@ -31,7 +31,7 @@
 		<attribute name="midletModuleName"/>
 		<attribute name="midletClass"/>
 		<sequential>
-			<jar destfile="build/@{midletModuleName}/@{name}.jar">
+			<jar destfile="build/@{midletModuleName}/midlet.jar">
 				<fileset dir="build/common/classes"/>
 				<fileset dir="build/midlet-common/classes"/>
 				<fileset dir="build/@{midletModuleName}/classes"/>
@@ -47,7 +47,7 @@
 				</manifest>
 			</jar>
 			<proguard>
-				-injars      build/@{midletModuleName}/@{name}.jar
+				-injars      build/@{midletModuleName}/midlet.jar
 				-outjars     build/@{name}.jar
 				-libraryjars ${path.microemu}/lib/cldcapi11.jar
 				-libraryjars ${path.microemu}/lib/midpapi20.jar
@@ -58,7 +58,6 @@
 				-microedition
 				-keep public class @{midletClass}
 			</proguard>
-			<!--copy file="build/@{midletModuleName}/@{name}.jar" todir="build"/-->
 			<length file="build/@{name}.jar" property="fileSize"/>
 			<echo file="build/@{name}.jad">MIDlet-Vendor: ${goaway.vendor}
 MIDlet-Version: ${goaway.version}
@@ -72,7 +71,7 @@ MIDlet-Jar-URL: @{name}.jar
 		</sequential>
 	</macrodef>
 	<macrodef name="runMidlet">
-		<attribute name="name"/>
+		<attribute name="moduleName"/>
 		<sequential>
 			<java fork="true" 
 				dir="build" 
@@ -85,7 +84,10 @@ MIDlet-Jar-URL: @{name}.jar
 					<path refid="jsr-75"/>
 				</classpath>
 				<arg line="--device org/microemu/device/large/device.xml"/>
-				<arg value="@{name}.jad"/>
+				<arg value="@{moduleName}/midlet.jar"/>
+				<!--
+				<jvmarg line="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,address=8000"/>
+				-->
 			</java>
 		</sequential>
 	</macrodef>
@@ -145,10 +147,10 @@ MIDlet-Jar-URL: @{name}.jar
 	<target name="build" depends="buildMidletLight, buildMidletFull"/>
 	
 	<target name="runLight" depends="buildMidletLight">
-		<runMidlet name="${goaway.name.light}"/>
+		<runMidlet moduleName="midlet-light"/>
 	</target>
 	
 	<target name="runFull" depends="buildMidletFull">
-		<runMidlet name="${goaway.name.full}"/>
+		<runMidlet moduleName="midlet-full"/>
 	</target>
 </project>

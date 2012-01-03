@@ -10,6 +10,7 @@ import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.lcdui.StringItem;
 
+import ru.goproject.goaway.collection.FileSystemProblemsCollection;
 import ru.goproject.goaway.util.FileSystemChooser;
 
 
@@ -30,13 +31,11 @@ public class SettingsForm extends Form implements CommandListener, ItemStateList
 	public SettingsForm(MainForm mainForm) {
 		super(LocalizedStrings.getResource(RES_TITLE));
 		this.mainForm = mainForm;
-		
-		Settings settings = Settings.getInstance();
-		
+
 		itemCollectionType = new ChoiceGroup(LocalizedStrings.getResource(RES_COLLECTION_TYPE), Choice.EXCLUSIVE);
 		itemCollectionType.append(LocalizedStrings.getResource(RES_COLLECTION_TYPE_FOLDER), null);
 		itemCollectionType.append(LocalizedStrings.getResource(RES_COLLECTION_TYPE_SINGLEFILE), null);
-		itemCollectionType.setSelectedIndex(settings.getCollectionType(), true);
+		itemCollectionType.setSelectedIndex(mainForm.getCollectionType(), true);
 		append(itemCollectionType);
 
 		itemCollectionPath = new StringItem(null, null);
@@ -62,17 +61,13 @@ public class SettingsForm extends Form implements CommandListener, ItemStateList
 	
 	public void commandAction(Command cmd, Displayable d) {
 		if (cmd == cmdOk) {
-			Settings settings = Settings.getInstance();
-			if (itemCollectionType.getSelectedIndex() == Settings.COLLECTION_FOLDER) {
-				settings.setCollectionFolder(itemCollectionPath.getText());	
-			} else {
-				settings.setCollectionFileName(itemCollectionPath.getText());	
-			}
-			settings.setCollectionType((byte)itemCollectionType.getSelectedIndex());
-			mainForm.applySettings(settings, false);
+			int type = itemCollectionType.getSelectedIndex();
+			String path = itemCollectionPath.getText();
+			mainForm.setProblemsCollection(type, path);
+			MidletUtils.show(mainForm);
 		} else if (cmd == cmdChangePath) {
 			FileSystemChooser fc;
-			if (itemCollectionType.getSelectedIndex() == Settings.COLLECTION_FOLDER) {
+			if (itemCollectionType.getSelectedIndex() == FileSystemProblemsCollection.TYPE_FOLDER) {
 				fc = new FileSystemChooser(this, cmd.getLabel(), null);			
 			} else {
 				fc = new FileSystemChooser(this, cmd.getLabel(), "*.sgf");	
@@ -83,14 +78,13 @@ public class SettingsForm extends Form implements CommandListener, ItemStateList
 	}
 
 	public void itemStateChanged(Item item) {
-		Settings settings = Settings.getInstance();
 		if (item == itemCollectionType) {
-			if (itemCollectionType.getSelectedIndex() == Settings.COLLECTION_FOLDER) {
+			if (itemCollectionType.getSelectedIndex() == FileSystemProblemsCollection.TYPE_FOLDER) {
 				itemCollectionPath.setLabel(LocalizedStrings.getResource(RES_COLLECTION_FOLDER));
-				itemCollectionPath.setText(settings.getCollectionFolder());
+				itemCollectionPath.setText("");
 			} else {
 				itemCollectionPath.setLabel(LocalizedStrings.getResource(RES_COLLECTION_FILENAME));
-				itemCollectionPath.setText(settings.getCollectionFileName());				
+				itemCollectionPath.setText("");				
 			}
 		}
 	}
