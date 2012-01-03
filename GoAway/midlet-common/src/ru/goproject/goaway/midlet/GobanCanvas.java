@@ -193,7 +193,7 @@ public class GobanCanvas extends Canvas implements CommandListener, ProblemsColl
 					messages[i],
 					getWidth()/2,
 					y,
-					Graphics.BASELINE// | Graphics.HCENTER
+					Graphics.BASELINE | Graphics.HCENTER
 				);
 			y += letterHeight + 2;
 		}
