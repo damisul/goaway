@@ -44,6 +44,9 @@
 					<attribute name="MIDlet-1" value="@{name},icon.png,@{midletClass}"/>					
 					<attribute name="MicroEdition-Configuration" value="CLDC-1.1"/>
 					<attribute name="MicroEdition-Profile" value="MIDP-2.0"/>
+					<attribute name="Navi-Key-Hidden" value="true"/>
+					<attribute name="Nokia-MIDlet-On-Screen-Keypad" value="no"/>
+					<attribute name="LGE-MIDlet-Display-Nav-Keypad" value="no"/>
 				</manifest>
 			</jar>
 			<proguard>
@@ -67,6 +70,9 @@ MicroEdition-Configuration: CLDC-1.1
 MicroEdition-Profile: MIDP-2.0
 MIDlet-Jar-Size: ${fileSize}
 MIDlet-Jar-URL: @{name}.jar
+Navi-Key-Hidden: true
+Nokia-MIDlet-On-Screen-Keypad: no
+LGE-MIDlet-Display-Nav-Keypad: no
 </echo>
 		</sequential>
 	</macrodef>
