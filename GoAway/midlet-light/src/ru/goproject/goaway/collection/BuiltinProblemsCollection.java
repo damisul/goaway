@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Vector;
 
 import ru.goproject.goaway.common.Problem;
+import ru.goproject.goaway.midlet.MidletUtils;
 import ru.goproject.goaway.midlet.StringReader;
 import ru.goproject.goaway.sgf.ProblemReader;
 
@@ -20,15 +21,22 @@ public class BuiltinProblemsCollection extends ProblemsCollection {
 		return (String)contents.elementAt(problemIndex);
 	}
 
-	public void requestProblem(int problemIndex) {
-		InputStream stream = null;
-		try {
-			stream = getClass().getResourceAsStream(PROBLEM_DIR + contents.elementAt(problemIndex));
-			Problem p = ProblemReader.readProblem(stream);
-			eventListener.onProblemLoaded(p, problemIndex);
-		} catch (Exception e) {
-			eventListener.onProblemLoadingFailed(e);
-		}
+	public void requestProblem(final int problemIndex) {
+		Thread t = new Thread() {
+			public void run() {
+				InputStream stream = null;
+				try {
+					stream = getClass().getResourceAsStream(PROBLEM_DIR + contents.elementAt(problemIndex));
+					Problem p = ProblemReader.readProblem(stream);
+					eventListener.onProblemLoaded(p, problemIndex);
+				} catch (Exception e) {
+					eventListener.onProblemLoadingFailed(e);
+				} finally {
+					MidletUtils.closeQuietly(stream);
+				}
+			}
+		};
+		t.start();
 	}
 
 	public void refresh() {
@@ -38,17 +46,22 @@ public class BuiltinProblemsCollection extends ProblemsCollection {
 			eventListener.onCollectionLoaded();
 			return;
 		}
-		try {
-			StringReader reader = new StringReader(getClass().getResourceAsStream(PROBLEM_INDEX));
-			while (!reader.isEof()) {
-				String st = reader.readLine().trim();
-				if (st.length() > 0) {
-					contents.addElement(st);
+		Thread t = new Thread() {
+			public void run() {
+				try {
+					StringReader reader = new StringReader(getClass().getResourceAsStream(PROBLEM_INDEX));
+					while (!reader.isEof()) {
+						String st = reader.readLine().trim();
+						if (st.length() > 0) {
+							contents.addElement(st);
+						}
+					}
+					eventListener.onCollectionLoaded();
+				} catch (Exception e) {
+					eventListener.onCollectionLoadingFailed(e);
 				}
 			}
-			eventListener.onCollectionLoaded();
-		} catch (Exception e) {
-			eventListener.onCollectionLoadingFailed(e);
-		}
+		};
+		t.start();
 	}
 }

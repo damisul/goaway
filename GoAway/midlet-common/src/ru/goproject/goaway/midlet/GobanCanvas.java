@@ -28,8 +28,7 @@ import ru.goproject.goaway.exception.GoAwayException;
  * GobanCanvas is responsible for drawing of go board and additional
  * problem-related info
  */
-public class GobanCanvas extends Canvas implements CommandListener,
-		ProblemsCollectionEventListener {
+public class GobanCanvas extends Canvas implements CommandListener,ProblemsCollectionEventListener {
 	/**
 	 * Color constants Color of black stone and lines
 	 */
@@ -154,12 +153,14 @@ public class GobanCanvas extends Canvas implements CommandListener,
 		removeCommand(cmdPrevious);
 		removeCommand(cmdRandom);
 		removeCommand(cmdSelectProblem);
-		removeCommand(cmdInfo);		
 		collection.refresh();
 		MidletUtils.show(this);
 	}
 
 	protected void keyPressed(int code) {
+		if (problem == null) {
+			return;
+		}
 		int gameAction = getGameAction(code);
 		if ((code == KEY_NUM2 || gameAction == UP) && cursor.y > 0) {
 			moveCursor(0, -1);
@@ -509,13 +510,16 @@ public class GobanCanvas extends Canvas implements CommandListener,
 	public void requestProblem() {
 		problem = null;
 		goban = null;
-		if (problemIndex < collection.size() && problemIndex >= 0) {
-			currentProblemDescription = collection.getProblemTitle(problemIndex);
-			collection.requestProblem(problemIndex);
-			messages = new String[] {
-					LocalizedStrings.getResource(RES_PROBLEM_LOADING),
-					currentProblemDescription };
+		if (problemIndex >= collection.size() || problemIndex < 0) {
+			problemIndex = 0;
 		}
+		currentProblemDescription = collection.getProblemTitle(problemIndex);
+		collection.requestProblem(problemIndex);
+		messages = new String[] {
+			LocalizedStrings.getResource(RES_PROBLEM_LOADING),
+			currentProblemDescription
+		};
+		removeCommand(cmdInfo);
 		repaint();
 	}
 
@@ -581,24 +585,25 @@ public class GobanCanvas extends Canvas implements CommandListener,
 
 	public void onCollectionLoaded() {
 		if (collection.size() == 0) {
-			MidletUtils.show(parent);
-			MidletUtils.showLocalizedMessage(CommonStrings.RES_ERROR, RES_EMPTY_COLLECTION);
+			messages = new String[] {
+				LocalizedStrings.getResource(RES_EMPTY_COLLECTION)
+			};
+			repaint();			
 		} else {
 			addCommand(cmdNext);
 			addCommand(cmdPrevious);
 			addCommand(cmdRandom);
 			addCommand(cmdSelectProblem);
-			addCommand(cmdInfo);
-			if (problemIndex >= collection.size()) {
-				problemIndex = 0;
-			}
 			requestProblem();
 		}
 	}
 
 	public void onCollectionLoadingFailed(Exception e) {
-		MidletUtils.show(parent);
 		MidletUtils.showError(e);
+		messages = new String[] {
+			e.getMessage()
+		};
+		repaint();
 	}
 
 	public void onProblemLoadingFailed(Exception e) {
@@ -607,6 +612,7 @@ public class GobanCanvas extends Canvas implements CommandListener,
 			currentProblemDescription
 		};
 		MidletUtils.showError(e);
+		repaint();
 	}
 
 	public void onProblemLoaded(Problem p, int problemIndex) {
@@ -634,10 +640,11 @@ public class GobanCanvas extends Canvas implements CommandListener,
 			commandAction(cmdHideHints, this);
 			initNode();
 			showComment();
+			addCommand(cmdInfo);
 			repaint();
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			MidletUtils.showError(e);
+		}				
 	}
 	
 	protected void sizeChanged(int newWidth, int newHeight) {
@@ -646,7 +653,6 @@ public class GobanCanvas extends Canvas implements CommandListener,
 			zoom(cellSize);
 		}
 	}
-	
 
 	private int getCellSize(Rectangle rect) {
 		int width = getWidth(),

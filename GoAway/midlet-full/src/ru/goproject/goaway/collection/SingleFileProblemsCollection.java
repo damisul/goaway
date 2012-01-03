@@ -1,5 +1,6 @@
 package ru.goproject.goaway.collection;
 
+import java.io.InputStream;
 import java.util.Vector;
 
 import javax.microedition.io.Connector;
@@ -8,6 +9,7 @@ import javax.microedition.io.file.FileConnection;
 import ru.goproject.goaway.common.Problem;
 import ru.goproject.goaway.exception.GoAwayException;
 import ru.goproject.goaway.midlet.FileSystemUtils;
+import ru.goproject.goaway.midlet.MidletUtils;
 import ru.goproject.goaway.sgf.ProblemReader;
 import ru.goproject.goaway.util.FilePos;
 import ru.goproject.goaway.util.SmartReader;
@@ -34,9 +36,11 @@ public class SingleFileProblemsCollection extends FileSystemProblemsCollection {
 			return;
 		}
 		
+		InputStream stream = null;
 		try {
 			fc = (FileConnection)Connector.open(path, Connector.READ);
-			SmartReader reader = new SmartReader(fc.openInputStream(), ProblemReader.RAW_ENCODING);
+			stream = fc.openInputStream();
+			SmartReader reader = new SmartReader(stream, ProblemReader.RAW_ENCODING);
 			// Перед первой задачей может идти заголовок коллекции, пропускаем его
 			reader.readTill('(');
 
@@ -71,6 +75,7 @@ public class SingleFileProblemsCollection extends FileSystemProblemsCollection {
 			}
 			reader.close();
 		} finally {
+			MidletUtils.closeQuietly(stream);
 			FileSystemUtils.closeFileConnection(fc);
 		}
 	}

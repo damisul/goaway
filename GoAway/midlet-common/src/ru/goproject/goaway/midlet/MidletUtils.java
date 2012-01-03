@@ -1,5 +1,7 @@
 package ru.goproject.goaway.midlet;
 
+import java.io.InputStream;
+
 import javax.microedition.lcdui.Alert;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -53,6 +55,17 @@ public class MidletUtils {
 			| ((b[1] & 0xFF) << 16) 
 			| ((b[2] & 0xFF) << 8)
 			| (b[3] & 0xFF);
+	}
+
+	public static void closeQuietly(InputStream stream) {
+		if (stream == null) {
+			return;
+		}
+		try {
+			stream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
