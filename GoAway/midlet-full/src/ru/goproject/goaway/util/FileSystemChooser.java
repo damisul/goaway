@@ -28,6 +28,7 @@ public class FileSystemChooser extends List implements CommandListener {
 	
 	private SettingsForm settingsForm;
 	private Command cmdOk;
+	private Command cmdCancel;
 	private Command cmdOpen;
 	private String fileMask;
 	private Vector pathEntries;
@@ -37,10 +38,12 @@ public class FileSystemChooser extends List implements CommandListener {
 		this.settingsForm = settingsForm;
 		this.fileMask = fileMask;
 		setCommandListener(this);
-		cmdOk = new Command(LocalizedStrings.getResource(CommonStrings.RES_OK), Command.SCREEN, 1);
-		cmdOpen = new Command(LocalizedStrings.getResource(RES_CMD_OPEN), Command.SCREEN, 2);
+		cmdOk = new Command(LocalizedStrings.getResource(CommonStrings.RES_OK), Command.OK, 1);
+		cmdCancel = new Command(LocalizedStrings.getResource(CommonStrings.RES_CANCEL), Command.BACK, 2);
+		cmdOpen = new Command(LocalizedStrings.getResource(RES_CMD_OPEN), Command.ITEM, 3);
 		pathEntries = new Vector();
 		addCommand(cmdOk);
+		addCommand(cmdCancel);
 		addCommand(cmdOpen);
 		setSelectCommand(cmdOpen);
 		loadList(ROOT);
@@ -132,6 +135,8 @@ public class FileSystemChooser extends List implements CommandListener {
 			if (item.equals(FOLDER_UP) || item.endsWith(folderSeparator)) {
 				loadList(item);
 			}
+		} else if (cmd == cmdCancel) {
+			MidletUtils.show(settingsForm);
 		}
 	}
 }
