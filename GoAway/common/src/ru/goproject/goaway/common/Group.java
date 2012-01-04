@@ -5,7 +5,7 @@ import java.util.Vector;
 public class Group {
 	private byte color;
 	private Vector points;
-	Group(Goban goban, int x, int y) {
+	public Group(Goban goban, int x, int y) {
 		color = goban.getPointColor(x, y);
 		points = new Vector();
 		points.addElement(new Point(x, y));
