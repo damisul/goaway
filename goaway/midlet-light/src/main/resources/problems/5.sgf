@@ -1,0 +1,81 @@
+(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]GE[life & death]SO[http://forum.kido.com.ru]
+RU[Japanese]SZ[19]KM[0.00]
+AW[ba][ca][db][fb][ec][cd][dd][fd][ce][fe][ff][bg][bh][dh][eh][ci][dj]AB[bb][bc][cc][dc][ed][de][ee][cf][df][cg][ch]
+(;B[ab]
+(;W[ad]
+(;B[bd]
+(;W[ae]
+;B[bf]
+;W[af]
+;B[be]
+;W[bi]
+;B[cd]C[RIGHT])
+(;W[be]
+;B[bf]
+;W[af]
+;B[ac]C[RIGHT]))
+(;B[be]
+;W[ae]
+(;B[bf]
+;W[af]
+;B[bd]
+;W[bi]
+;B[cd]C[RIGHT])
+(;B[af]
+;W[bf]
+;B[bd]
+;W[cd]C[Black dead]))
+(;B[bf]
+;W[af]
+;B[be]
+;W[ae]
+;B[bd]
+(;W[bi]
+;B[cd]C[RIGHT])
+(;W[cd]
+;B[ac]
+;W[bi]
+;B[ag]C[RIGHT])))
+(;W[be]
+;B[bf]
+;W[af]
+(;B[bd]
+;W[ae]
+;B[ad]C[RIGHT])
+(;B[ad]
+;W[bi]
+;B[ae]C[RIGHT])))
+(;B[ad]
+;W[ab]
+;B[bf]
+;W[af])
+(;B[bf]
+;W[ab]
+(;B[be]
+;W[af]
+(;B[ac]
+;W[ae]C[Black dead])
+(;B[ae]
+;W[ac]C[Black dead]))
+(;B[af]
+;W[ad]
+(;B[ac]
+;W[bd]C[Black dead])
+(;B[bd]
+;W[ac]C[Black dead])
+(;B[be]
+;W[ac]C[Black dead])))
+(;B[be]
+;W[ab])
+(;B[bd]
+;W[ab]
+;B[bf]
+;W[ac]
+(;B[ad]
+;W[af]C[Black dead])
+(;B[ag]
+;W[bi]
+;B[ad]
+;W[af]C[Black dead])
+(;B[af]
+;W[ad]C[Black dead])))

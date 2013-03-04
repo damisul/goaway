@@ -1,0 +1,41 @@
+;Common
+Common.Ok:Ok
+Common.Cancel:Cancel
+Common.Yes:Yes
+Common.No:No
+Common.Error:Error
+
+;Main form
+MainForm.title:Main menu
+MainForm.cmdSolveProblems:Problems
+MainForm.cmdExit:Exit
+MainForm.copyright:(c)2008 Damir Sultanbekov 
+MainForm.homepage:Homepage
+
+;Goban 
+GobanCanvas.cmdNext:Next
+GobanCanvas.cmdPrevious:Previous
+GobanCanvas.cmdRandom:Random
+GobanCanvas.cmdSelectProblem:Go to...
+GobanCanvas.cmdUndo:Undo
+GobanCanvas.cmdComment:Read comment
+GobanCanvas.cmdShowHints:Show hints
+GobanCanvas.cmdHideHints:Hide hints
+GobanCanvas.solved:Solved!
+GobanCanvas.wrong:Wrong!
+GobanCanvas.damagedFile:Wrong file format
+GobanCanvas.problemLoading:Loading problem...
+GobanCanvas.emptyCollection:No problems in collection
+GobanCanvas.loadingCollection:Loading collection...
+
+;Problem info
+Info.title:Information
+Info.problemTitle:Problem
+Info.source:Source
+Info.genre:Genre
+Info.difficulty:Difficulty
+
+;Problem selector
+Selector.title:Select problem
+Selector.problemIndex:Problem number
+Selector.invalidProblemIndex:Invalid problem number

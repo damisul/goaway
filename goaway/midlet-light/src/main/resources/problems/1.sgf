@@ -1,0 +1,17 @@
+(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]GE[life & death]SO[http://forum.kido.com.ru]
+RU[Japanese]SZ[13]KM[0.00]
+PW[White]PB[Black]AW[aj][bj][cj][ej][gj][dk][fk][hk][al][fl][hl][am][bm][dm]AB[ak][bk][ck][cl][dl][gl][fm][gm]
+(;B[el]
+;W[em]
+(;B[bl]
+(;W[ek]
+;B[cm]LB[am:B][em:A]C[A and B are miai now])
+(;W[hm]
+;B[cm]
+;W[em]
+;B[am]
+;W[gk]C[RIGHT]))
+(;B[cm]
+;W[em]))
+(;B[em]
+;W[el]))

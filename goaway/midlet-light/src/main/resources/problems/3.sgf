@@ -1,0 +1,16 @@
+(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]GE[life & death]SO[http://forum.kido.com.ru]
+RU[Japanese]SZ[19]KM[0.00]
+AW[pk][qk][rk][sk][pl][pm][sm][pn][rn][po][oq][pq][sq][qr][rr][sr]AB[ql][rl][sl][qm][qn][qo][ro][qp][rq]
+(;B[sp]
+;W[so]
+(;B[rm]
+;W[rp]
+;B[sn]C[RIGHT])
+(;B[rp]
+;W[sn]))
+(;B[so]
+;W[sn]
+(;B[sp]
+;W[qq])
+(;B[qq]
+;W[sp])))
