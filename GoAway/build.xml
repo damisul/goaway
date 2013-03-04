@@ -21,7 +21,7 @@
 				<fileset dir="./build/@{name}" includes="**/*"/>
 			</delete>
 			<mkdir dir="./build/@{name}/classes"/>
-			<javac source="1.2" target="1.2" debug="true" srcdir="@{name}/src/" destdir="./build/@{name}/classes" includeantruntime="false">
+			<javac source="1.2" target="1.2" debug="true" srcdir="@{name}/src/" destdir="./build/@{name}/classes" includeantruntime="false" encoding="UTF-8">
 				<classpath refid="@{classpathRefId}"/>
 			</javac>
 		</sequential>
@@ -136,18 +136,6 @@ LGE-MIDlet-Display-Nav-Keypad: no
 		</path>
 		<compileModule name="midlet-full" classpathrefid="cp"/>
 		<buildMidletJar midletclass="ru.goproject.goaway.midlet.GoAwayMidlet" midletmodulename="midlet-full" name="${goaway.name.full}"/>		
-	</target>
-	
-	<target name="buildAndroid" depends="buildMidletFull">
-		<copy file="build/${goaway.name.full}.jad" todir="${path.microemu-android}" overwrite="true"/>
-		<copy file="build/${goaway.name.full}.jar" todir="${path.microemu-android}" overwrite="true"/>
-		<!--
-		<property name="sdk-folder" value="${path.android.sdk}"/>
-		<property name="midlet.jad" value="${goaway.name.full}.jad"/>
-		<property name="midlet.package" value="${goaway.name.full}.apk"/>
-		-->
-		<ant dir="${path.microemu-android}" inheritall="false"/>
-		<copy file="${path.microemu-android}/bin/${goaway.name.full}.apk" todir="build" overwrite="true"/>
 	</target>
 	
 	<target name="build" depends="buildMidletLight, buildMidletFull"/>
