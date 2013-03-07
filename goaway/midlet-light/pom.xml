@@ -25,7 +25,10 @@
 	</parent>
 	<groupId>ru.goproject.goaway</groupId>
 	<artifactId>midlet-light</artifactId>
-	<description>GoAway - midlet without filesystem support (built-in collection)</description>
+	<description>GoAway.ME.Light - midlet without filesystem support (built-in collection)</description>
+	<properties>
+		<midlet.name>GoAway.ME.Light</midlet.name>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -68,12 +71,16 @@
 					<useWtkLibs>false</useWtkLibs>
 					<proguardPreverify>true</proguardPreverify>
 					<midletVendor>Damir Sultanbekov</midletVendor>					
-					<midletName>GoAway.ME.Light</midletName>
+					<midletName>${midlet.name}</midletName>
+					<midletName>${midlet.name}</midletName>
+					<jarfile>${midlet.name}</jarfile>
+					<jadfile>${midlet.name}</jadfile>
+					<appendClassifier>false</appendClassifier>
 					<proguard>true</proguard>
 					<obfuscate>true</obfuscate>
 					<midlets>
 						<MIDlet>
-							<name>GoAway.ME.Light</name>
+							<name>${midlet.name}</name>
 							<icon>icon.png</icon>
 							<class>ru.goproject.goaway.light.GoAwayLightMidlet</class>
 						</MIDlet>
