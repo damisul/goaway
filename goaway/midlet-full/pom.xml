@@ -78,7 +78,8 @@
 					<obfuscate>true</obfuscate>
 					<midlets>
 						<MIDlet>
-							<icon>/icon.png</icon>
+							<name>GoAway.ME</name>
+							<icon>icon.png</icon>
 							<class>ru.goproject.goaway.midlet.GoAwayMidlet</class>
 						</MIDlet>
 					</midlets>
