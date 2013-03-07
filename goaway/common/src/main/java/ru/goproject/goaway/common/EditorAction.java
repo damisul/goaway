@@ -56,13 +56,13 @@ public class EditorAction implements NodeAction {
 		int sz = addedBlackStones.size();
 		for (int i = 0; i < sz; ++i) {
 			Point stone = (Point)addedBlackStones.elementAt(i);
-			goban.addStone(stone, Stone.STONE_BLACK);
+			goban.addStone(stone, Goban.STONE_BLACK);
 		}
 		
 		sz = addedWhiteStones.size();
 		for (int i = 0; i < sz; ++i) {
 			Point stone = (Point)addedWhiteStones.elementAt(i);
-			goban.addStone(stone, Stone.STONE_WHITE);
+			goban.addStone(stone, Goban.STONE_WHITE);
 		}
 		
 	}

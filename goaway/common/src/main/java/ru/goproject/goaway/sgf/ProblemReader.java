@@ -24,13 +24,13 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import ru.goproject.goaway.common.EditorAction;
+import ru.goproject.goaway.common.Goban;
 import ru.goproject.goaway.common.Label;
 import ru.goproject.goaway.common.MoveAction;
 import ru.goproject.goaway.common.Node;
 import ru.goproject.goaway.common.NodeAction;
 import ru.goproject.goaway.common.Point;
 import ru.goproject.goaway.common.Problem;
-import ru.goproject.goaway.common.Stone;
 import ru.goproject.goaway.util.SmartReader;
 
 public class ProblemReader {
@@ -192,22 +192,22 @@ public class ProblemReader {
 			node = root;			
 		} else {
 			Point pt = null;
-			byte color = Stone.STONE_NONE;			
+			byte color = Goban.STONE_NONE;			
 			if (props.containsKey(SgfProperty.BLACK_MOVE)) {
-				color = Stone.STONE_BLACK;
+				color = Goban.STONE_BLACK;
 				pt = (Point)props.get(SgfProperty.BLACK_MOVE);
 				if (props.containsKey(SgfProperty.WHITE_MOVE)) {
 					throw new ParseError("Two moves in one node");					
 				}
 			} else if (props.containsKey(SgfProperty.WHITE_MOVE)) {
-				color = Stone.STONE_WHITE;
+				color = Goban.STONE_WHITE;
 				pt = (Point)props.get(SgfProperty.WHITE_MOVE);
 			}
 			if (pt == PASS_MOVE) {
 				pt = null;
 			}
 			
-			boolean bad = color == Stone.STONE_NONE || (props.containsKey(SgfProperty.ADD_BLACK_STONES) 
+			boolean bad = color == Goban.STONE_NONE || (props.containsKey(SgfProperty.ADD_BLACK_STONES) 
 				|| props.containsKey(SgfProperty.ADD_WHITE_STONES)
 			);
 			
@@ -309,9 +309,9 @@ public class ProblemReader {
 			// COMPATIBILITY
 			// в некоторых файлах цвет обозначается не буквой, а цифрой (используется тип SGF Double вместо Color)
 			if ("B".equals(propValue) || "1".equals(propValue)) {
-				return new Byte(Stone.STONE_BLACK);
+				return new Byte(Goban.STONE_BLACK);
 			} else if ("W".equals(propValue) || "2".equals(propValue)) {
-				return new Byte(Stone.STONE_WHITE);
+				return new Byte(Goban.STONE_WHITE);
 			} else {
 				throw new ParseError("Illegal color: " + propValue);				
 			}

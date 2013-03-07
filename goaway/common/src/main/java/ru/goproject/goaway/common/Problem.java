@@ -31,21 +31,21 @@ public class Problem {
 	public byte opponentColor;
 	
 	public Problem() {
-		setPlayerColor(Stone.STONE_NONE);
+		setPlayerColor(Goban.STONE_NONE);
 		size = 19;
 	}
 
 	public void setPlayerColor(byte color) {
 		playerColor = color;
 		switch(color) {
-		case Stone.STONE_BLACK: opponentColor = Stone.STONE_WHITE; break;
-		case Stone.STONE_WHITE: opponentColor = Stone.STONE_BLACK; break;
-		default: opponentColor = Stone.STONE_NONE;
+		case Goban.STONE_BLACK: opponentColor = Goban.STONE_WHITE; break;
+		case Goban.STONE_WHITE: opponentColor = Goban.STONE_BLACK; break;
+		default: opponentColor = Goban.STONE_NONE;
 		}		 
 	}
 
 	public void init(Vector problemNodes) {
-		if (playerColor == Stone.STONE_NONE) {
+		if (playerColor == Goban.STONE_NONE) {
 			if (problemNodes.size() > 1) {
 				MoveAction action = (MoveAction)((Node)problemNodes.elementAt(1)).getAction();
 				setPlayerColor(action.getColor());

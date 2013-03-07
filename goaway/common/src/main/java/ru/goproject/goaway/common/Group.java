@@ -42,7 +42,7 @@ public class Group {
 		Vector dame = new Vector();		
 		for(int i = 0; i < points.size(); ++i) {
 			Point pt = (Point)points.elementAt(i);
-			Vector neighbours = goban.getNeighbours(pt, Stone.STONE_NONE);
+			Vector neighbours = goban.getNeighbours(pt, Goban.STONE_NONE);
 			for (int j = 0; j < neighbours.size(); ++j) {
 				Point neighbour = (Point)neighbours.elementAt(j);
 				if (!dame.contains(neighbour)) {
@@ -54,12 +54,12 @@ public class Group {
 	}
 	
 	public boolean isAlive(Goban goban) {
-		if (color == Stone.STONE_NONE) {
+		if (color == Goban.STONE_NONE) {
 			return true;
 		}
 		for (int i = 0; i < points.size(); ++i) {
 			Point pt = (Point) points.elementAt(i);
-			if (goban.getNeighbours(pt, Stone.STONE_NONE).size() > 0) {
+			if (goban.getNeighbours(pt, Goban.STONE_NONE).size() > 0) {
 				return true;
 			}
 		}

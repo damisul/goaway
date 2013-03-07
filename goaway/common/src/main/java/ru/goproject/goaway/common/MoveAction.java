@@ -30,7 +30,7 @@ public class MoveAction implements NodeAction {
 	public MoveAction(Point point, byte color) {
 		this.point = point;
 		this.color = color;
-		opponentColor = color == Stone.STONE_BLACK ? Stone.STONE_WHITE : Stone.STONE_BLACK;
+		opponentColor = color == Goban.STONE_BLACK ? Goban.STONE_WHITE : Goban.STONE_BLACK;
 	}
 	
 	public Point getPoint() {

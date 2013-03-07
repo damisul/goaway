@@ -22,14 +22,19 @@ import java.util.Vector;
 import ru.goproject.goaway.exception.GoAwayException;
 
 public class Goban {
+	public final static byte STONE_NONE = 0;
+	public final static byte STONE_BLACK = 1;
+	public final static byte STONE_WHITE = 2;
+	
 	private final int size;
 	private final byte[][] board;
+	
 	Goban(int size) {
 		this.size = size;
 		board = new byte[size][size];
 		for(byte i = 0; i < size; ++i) {
 			for (byte j = 0; j < size; ++j) {
-				board[i][j] = Stone.STONE_NONE;
+				board[i][j] = STONE_NONE;
 			}
 		}
 	}
@@ -86,18 +91,18 @@ public class Goban {
 	
 	public boolean isMoveAllowed(Point point, byte color) {
 		// если на этом месте уже есть камень, то ход запрещен
-		if (getPointColor(point) != Stone.STONE_NONE) {
+		if (getPointColor(point) != STONE_NONE) {
 			return false;
 		}
 		
 		// если к выбранному пункту прилегает хотя бы один свободный пункт, то ход разрешен 
 		// так как он не может быть самоубийственным
-		Vector points = getNeighbours(point, Stone.STONE_NONE);
+		Vector points = getNeighbours(point, STONE_NONE);
 		if (!points.isEmpty()) {
 			return true;
 		}
 				
-		byte opponentColor = color == Stone.STONE_BLACK ? Stone.STONE_WHITE : Stone.STONE_BLACK;		
+		byte opponentColor = color == STONE_BLACK ? STONE_WHITE : STONE_BLACK;		
 		points = getNeighbours(point, opponentColor);
 		for (int i = 0; i < points.size(); ++i) {
 			Point pt = (Point)points.elementAt(i);
@@ -130,12 +135,12 @@ public class Goban {
 	 */
 	public Vector doMove(Point stone, byte color) throws GoAwayException {
 		Vector eatenStones = new Vector();
-		byte opponentColor = color == Stone.STONE_BLACK ? Stone.STONE_WHITE : Stone.STONE_BLACK;
+		byte opponentColor = color == STONE_BLACK ? STONE_WHITE : STONE_BLACK;
 
 		int x = stone.getX(),
 			y = stone.getY();
 		
-		if (getPointColor(stone) != Stone.STONE_NONE) {
+		if (getPointColor(stone) != STONE_NONE) {
 			throw new GoAwayException("Couldn't play at the existing stone");
 		} else {
 			setPointColor(stone, color);
@@ -146,7 +151,7 @@ public class Goban {
 		eatIfPossible(x, y - 1, opponentColor, eatenStones);
 		Group g = new Group(this, x, y);
 		if (!g.isAlive(this)) {
-			setPointColor(stone, Stone.STONE_NONE);
+			setPointColor(stone, STONE_NONE);
 			throw new GoAwayException("Forbidden move");
 		}
 		return eatenStones.size() > 0? eatenStones : null;
@@ -160,7 +165,7 @@ public class Goban {
 	}
 	
 	public void addStone(Point pt, byte color) throws GoAwayException {
-		if (getPointColor(pt) != Stone.STONE_NONE) {
+		if (getPointColor(pt) != STONE_NONE) {
 			throw new GoAwayException("No place to add stone");
 		}
 		setPointColor(pt, color);
@@ -170,7 +175,7 @@ public class Goban {
 		if (getPointColor(pt) != color) {
 			throw new GoAwayException("Stone not found");
 		} else {
-			setPointColor(pt, Stone.STONE_NONE);	
+			setPointColor(pt, STONE_NONE);	
 		}
 	}
 
@@ -191,7 +196,7 @@ public class Goban {
 			for(int i = 0; i < points.size(); ++i) {
 				Point p = (Point)points.elementAt(i);
 				removeStone(p, opponentColor);
-				setPointColor(p, Stone.STONE_NONE);
+				setPointColor(p, STONE_NONE);
 				eatenStones.addElement(p);
 			}
 		}

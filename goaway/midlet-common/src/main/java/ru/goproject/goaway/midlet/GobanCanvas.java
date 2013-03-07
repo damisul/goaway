@@ -38,7 +38,6 @@ import ru.goproject.goaway.common.Node;
 import ru.goproject.goaway.common.Point;
 import ru.goproject.goaway.common.Problem;
 import ru.goproject.goaway.common.ProblemNavigator;
-import ru.goproject.goaway.common.Stone;
 import ru.goproject.goaway.exception.GoAwayException;
 
 /**
@@ -254,12 +253,12 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 				for (int j = canvasRect.minY; j <= canvasRect.maxY; ++j) {
 					byte c = goban.getPointColor(i, j);
 					switch (c) {
-					case Stone.STONE_NONE:
+					case Goban.STONE_NONE:
 						continue;
-					case Stone.STONE_BLACK:
+					case Goban.STONE_BLACK:
 						g.setColor(COLOR_BLACK);
 						break;
-					case Stone.STONE_WHITE:
+					case Goban.STONE_WHITE:
 						g.setColor(COLOR_WHITE);
 						break;
 					}
@@ -319,10 +318,10 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 					y = lbl.getPoint().y;
 
 				switch (goban.getPointColor(x, y)) {
-				case Stone.STONE_NONE:
+				case Goban.STONE_NONE:
 					g.setColor(COLOR_WHITE);
 					break;
-				case Stone.STONE_BLACK:
+				case Goban.STONE_BLACK:
 					g.setColor(COLOR_WHITE);
 					break;
 				default:
@@ -356,7 +355,7 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 	}
 
 	private void drawNotificationArea(Graphics g, Node current) {
-		if (problem.playerColor == Stone.STONE_BLACK) {
+		if (problem.playerColor == Goban.STONE_BLACK) {
 			g.setColor(COLOR_BLACK);
 		} else {
 			g.setColor(COLOR_WHITE);
