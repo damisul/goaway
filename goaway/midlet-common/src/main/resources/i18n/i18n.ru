@@ -9,7 +9,7 @@ Common.Error:Ошибка
 MainForm.title:Главное меню
 MainForm.cmdSolveProblems:К задачам
 MainForm.cmdExit:Выход
-MainForm.copyright:(c)2008 Дамир Султанбеков 
+MainForm.copyright:Copyright (c) 2008-2013 Дамир Султанбеков 
 MainForm.homepage:Сайт
 
 ;Гобан
