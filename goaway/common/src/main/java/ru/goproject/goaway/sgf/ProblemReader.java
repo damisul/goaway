@@ -453,8 +453,13 @@ public class ProblemReader {
 			if (idx != -1) {
 				comment = (comment.substring(0, idx) + comment.substring(idx + 7)).trim();
 				n.markNotThis();
-			}			
-			n.setComment(comment);
+			}
+			comment = comment.trim();
+			if (comment.length() > 0) {
+				n.setComment(comment);
+			} else {
+				n.setComment(null);
+			}
 		}
 		return true;
 	}
