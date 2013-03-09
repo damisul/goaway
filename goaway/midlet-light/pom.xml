@@ -73,8 +73,8 @@
 					<midletVendor>Damir Sultanbekov</midletVendor>					
 					<midletName>${midlet.name}</midletName>
 					<midletName>${midlet.name}</midletName>
-					<jarfile>${midlet.name}</jarfile>
-					<jadfile>${midlet.name}</jadfile>
+					<jarfile>${midlet.name}-${project.version}</jarfile>
+					<jadfile>${midlet.name}-${project.version}</jadfile>
 					<appendClassifier>false</appendClassifier>
 					<proguard>true</proguard>
 					<obfuscate>true</obfuscate>
