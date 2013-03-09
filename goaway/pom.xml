@@ -69,6 +69,7 @@
 	</build>
 	<scm>
 		<connection>scm:svn:https://goaway.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://goaway.googlecode.com/svn/trunk</developerConnection>
 		<url>https://goaway.googlecode.com/svn/trunk</url>
 	</scm>
 	
