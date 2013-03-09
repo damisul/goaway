@@ -26,6 +26,8 @@ GobanCanvas.cmdUndo:Назад
 GobanCanvas.cmdComment:Читать комментарий
 GobanCanvas.cmdShowHints:Подсказки
 GobanCanvas.cmdHideHints:Скрыть подсказки
+GobanCanvas.cmdZoomIn:Увеличить
+GobanCanvas.cmdZoomOut:Уменьшить
 GobanCanvas.solved:Решено!
 GobanCanvas.wrong:Ошибка!
 GobanCanvas.damagedFile:Неверный формат файла

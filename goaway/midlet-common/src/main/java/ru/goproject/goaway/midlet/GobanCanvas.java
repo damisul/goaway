@@ -17,6 +17,7 @@
  */
 package ru.goproject.goaway.midlet;
 
+import ru.goproject.goaway.common.Rectangle;
 import java.util.Date;
 import java.util.Random;
 import java.util.Vector;
@@ -75,6 +76,8 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 	private final static String RES_CMD_COMMENT = "GobanCanvas.cmdComment";
 	private final static String RES_CMD_SHOW_HINTS = "GobanCanvas.cmdShowHints";
 	private final static String RES_CMD_HIDE_HINTS = "GobanCanvas.cmdHideHints";
+	private final static String RES_CMD_ZOOM_IN = "GobanCanvas.cmdZoomIn";
+	private final static String RES_CMD_ZOOM_OUT = "GobanCanvas.cmdZoomOut";
 
 	private final static String RES_NOTIFY_SOLVED = "GobanCanvas.solved";
 	private final static String RES_NOTIFY_WRONG = "GobanCanvas.wrong";
@@ -124,6 +127,8 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 	private Command cmdHideHints;
 	private Command cmdMainMenu;
 	private Command cmdInfo;
+	private Command cmdZoomIn;
+	private Command cmdZoomOut;
 	private boolean isCmdCommentVisible = false;
 	private boolean isCmdUndoVisible = false;
 	private Point cursor;
@@ -138,7 +143,7 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 	public GobanCanvas(Displayable parent) {
 		problemNavigator = new ProblemNavigator();
 		this.parent = parent;
-		cmdUndo = new Command(LocalizedStrings.getResource(RES_CMD_UNDO), Command.SCREEN, 1);
+		cmdUndo = new Command(LocalizedStrings.getResource(RES_CMD_UNDO), Command.BACK, 1);
 		cmdComment = new Command(LocalizedStrings.getResource(RES_CMD_COMMENT), Command.SCREEN, 2);
 		cmdNext = new Command(LocalizedStrings.getResource(RES_CMD_NEXT), Command.SCREEN, 3);
 		cmdPrevious = new Command(LocalizedStrings.getResource(RES_CMD_PREVIOUS), Command.SCREEN, 4);
@@ -146,8 +151,10 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 		cmdSelectProblem = new Command(LocalizedStrings.getResource(RES_CMD_SELECT_PROBLEM), Command.SCREEN, 6);
 		cmdShowHints = new Command(LocalizedStrings.getResource(RES_CMD_SHOW_HINTS), Command.SCREEN, 7);
 		cmdHideHints = new Command(LocalizedStrings.getResource(RES_CMD_HIDE_HINTS), Command.SCREEN, 8);
-		cmdInfo = new Command(LocalizedStrings.getResource(ProblemInfoForm.TITLE), Command.ITEM, 9);
-		cmdMainMenu = new Command(LocalizedStrings.getResource(AbstractMainForm.RES_TITLE), Command.SCREEN, 10);
+		cmdZoomIn = new Command(LocalizedStrings.getResource(RES_CMD_ZOOM_IN), Command.SCREEN, 9);
+		cmdZoomOut = new Command(LocalizedStrings.getResource(RES_CMD_ZOOM_OUT), Command.SCREEN, 10);
+		cmdInfo = new Command(LocalizedStrings.getResource(ProblemInfoForm.TITLE), Command.ITEM, 11);
+		cmdMainMenu = new Command(LocalizedStrings.getResource(AbstractMainForm.RES_TITLE), Command.SCREEN, 12);
 
 		setCommandListener(this);
 		addCommand(cmdMainMenu);
@@ -536,6 +543,8 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			currentProblemDescription
 		};
 		removeCommand(cmdInfo);
+		removeCommand(cmdZoomIn);
+		removeCommand(cmdZoomOut);
 		repaint();
 	}
 
@@ -596,6 +605,10 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			}
 		} else if (cmd == cmdMainMenu) {
 			MidletUtils.show(parent);
+		} else if (cmd == cmdZoomIn) {
+			zoom(cellSize + 2);
+		} else if (cmd == cmdZoomOut) {
+			zoom(cellSize - 2);
 		}
 	}
 
@@ -669,11 +682,13 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			}
 			adjustCanvasRectToGobanBorders();
 			
-			hoshi = getStarPoints(gobanSize);
+			hoshi = goban.getStarPoints();
 			commandAction(cmdHideHints, this);
 			initNode();
 			showComment();
 			addCommand(cmdInfo);
+			addCommand(cmdZoomIn);
+			addCommand(cmdZoomOut);
 			repaint();
 		} catch (Exception e) {
 			MidletUtils.showError(e);
@@ -838,37 +853,5 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			problemRect.maxY += margin;
 		}
 		return problemRect;
-	}
-
-	private static Point[] getStarPoints(int gobanSize) {
-		if (gobanSize < 7) {
-			return null;
-		}
-		boolean drawTengen = gobanSize >= 13 && gobanSize % 2 == 1;
-		Point[] hoshi;
-		if (drawTengen) {
-			hoshi = new Point[9];
-		} else {
-			hoshi = new Point[4];
-		}
-
-		int d1 = 3;
-		if (gobanSize <= 13) {
-			d1 = 2;
-		}
-		int d2 = gobanSize - 1 - d1;
-		hoshi[0] = new Point(d1, d1);
-		hoshi[1] = new Point(d1, d2);
-		hoshi[2] = new Point(d2, d1);
-		hoshi[3] = new Point(d2, d2);
-		if (drawTengen) {
-			int d3 = gobanSize / 2;
-			hoshi[4] = new Point(d1, d3);
-			hoshi[5] = new Point(d3, d1);
-			hoshi[6] = new Point(d3, d3);
-			hoshi[7] = new Point(d2, d3);
-			hoshi[8] = new Point(d3, d2);
-		}
-		return hoshi;
 	}
 }

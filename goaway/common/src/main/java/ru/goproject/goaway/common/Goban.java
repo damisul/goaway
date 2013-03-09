@@ -201,5 +201,36 @@ public class Goban {
 			}
 		}
 	}
+	
+	public Point[] getStarPoints() {
+		if (size < 7) {
+			return null;
+		}
+		boolean drawTengen = size >= 13 && size % 2 == 1;
+		Point[] hoshi;
+		if (drawTengen) {
+			hoshi = new Point[9];
+		} else {
+			hoshi = new Point[4];
+		}
 
+		int d1 = 3;
+		if (size <= 13) {
+			d1 = 2;
+		}
+		int d2 = size - 1 - d1;
+		hoshi[0] = new Point(d1, d1);
+		hoshi[1] = new Point(d1, d2);
+		hoshi[2] = new Point(d2, d1);
+		hoshi[3] = new Point(d2, d2);
+		if (drawTengen) {
+			int d3 = size / 2;
+			hoshi[4] = new Point(d1, d3);
+			hoshi[5] = new Point(d3, d1);
+			hoshi[6] = new Point(d3, d3);
+			hoshi[7] = new Point(d2, d3);
+			hoshi[8] = new Point(d3, d2);
+		}
+		return hoshi;
+	}
 }

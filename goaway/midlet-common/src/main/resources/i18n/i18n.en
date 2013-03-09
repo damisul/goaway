@@ -25,6 +25,8 @@ GobanCanvas.cmdUndo:Undo
 GobanCanvas.cmdComment:Read comment
 GobanCanvas.cmdShowHints:Show hints
 GobanCanvas.cmdHideHints:Hide hints
+GobanCanvas.cmdZoomIn:Zoom in
+GobanCanvas.cmdZoomOut:Zoom out
 GobanCanvas.solved:Solved!
 GobanCanvas.wrong:Wrong!
 GobanCanvas.damagedFile:Wrong file format

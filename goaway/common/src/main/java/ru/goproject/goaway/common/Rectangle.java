@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with GoAway.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.goproject.goaway.midlet;
+package ru.goproject.goaway.common;
 
 import ru.goproject.goaway.common.Point;
 
