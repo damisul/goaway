@@ -28,18 +28,16 @@ import javax.microedition.rms.RecordStoreException;
 import ru.goproject.goaway.collection.ProblemsCollection;
 
 public abstract class AbstractMainForm extends Form implements CommandListener {
-	public final static String RES_TITLE = "MainForm.title";	
+	public final static String RES_TITLE = "MainForm.title";
 	private final static String RES_CMD_SOLVE_PROBLEMS = "MainForm.cmdSolveProblems";
 	private final static String RES_CMD_EXIT = "MainForm.cmdExit";
-	private final static String RES_COPYRIGHT = "MainForm.copyright";
-	private final static String RES_HOMEPAGE = "MainForm.homepage";
-	private final static String HOMEPAGE_ADDRESS = " http://goaway.goproject.ru";
 
 	private final static String RECORDSTORE_NAME = "GoAway.Settings";
 	protected final static int RECORDSTORE_POS_PROBLEM_INDEX = 1;
 
 	private static Command cmdSolveProblems;
 	private static Command cmdExit;
+	private static Command cmdAbout;
 
 	private AbstractMidlet midlet;	
 	protected GobanCanvas canvas;
@@ -49,11 +47,15 @@ public abstract class AbstractMainForm extends Form implements CommandListener {
 		super(LocalizedStrings.getResource(RES_TITLE));
 		this.midlet = midlet;
 
+		append(MidletUtils.getAppName());
+		
 		cmdSolveProblems = new Command(LocalizedStrings.getResource(RES_CMD_SOLVE_PROBLEMS), Command.SCREEN, 1);
 		cmdExit = new Command(LocalizedStrings.getResource(RES_CMD_EXIT), Command.SCREEN, 3);
+		cmdAbout = new Command(LocalizedStrings.getResource(AboutForm.RES_TITLE), Command.SCREEN, 10);
 
 		addCommand(cmdSolveProblems);
 		addCommand(cmdExit);
+		addCommand(cmdAbout);
 		setCommandListener(this);
 		
 		canvas = new GobanCanvas(this);
@@ -69,10 +71,6 @@ public abstract class AbstractMainForm extends Form implements CommandListener {
 		} finally {
 			closeQuietly(rs);
 		}
-		
-		append(MidletUtils.getAppName());
-		append(LocalizedStrings.getResource(RES_COPYRIGHT));
-		append(LocalizedStrings.getResource(RES_HOMEPAGE) + HOMEPAGE_ADDRESS);
 		
 		MidletUtils.show(this);
 	}
@@ -92,6 +90,9 @@ public abstract class AbstractMainForm extends Form implements CommandListener {
 				midlet.notifyDestroyed();
 			} catch (MIDletStateChangeException ex) {
 			}
+		} else if (cmd == cmdAbout) {
+			AboutForm form = new AboutForm(this);
+			MidletUtils.show(form);
 		}
 	}
 

@@ -9,8 +9,13 @@ Common.Error:Ошибка
 MainForm.title:Главное меню
 MainForm.cmdSolveProblems:К задачам
 MainForm.cmdExit:Выход
-MainForm.copyright:Copyright (c) 2008-2013 Дамир Султанбеков 
-MainForm.homepage:Сайт
+
+;Окно 'О программе...'
+AboutForm.title:О программе...
+AboutForm.copyright:Copyright (c) 2008-2013 Дамир Султанбеков
+AboutForm.homepage:Сайт
+AboutForm.license:Это програма является свободным программным обеспечением: вы можете распространять и/или модифицировать её в соответствиями с условиями лицензии GNU GPL версии 3
+
 
 ;Гобан
 GobanCanvas.cmdNext:Следующая
