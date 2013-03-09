@@ -139,6 +139,8 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 	private Rectangle canvasRect;
 	private int canvasWidthInCells;
 	private int canvasHeightInCells;
+	
+	private Point pressedPoint;
 
 	public GobanCanvas(Displayable parent) {
 		problemNavigator = new ProblemNavigator();
@@ -218,16 +220,34 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 
 	protected void pointerPressed(int x, int y) {
 		super.pointerPressed(x, y);
-		if (goban != null) {
-			x = getGobanX(x);
-			y = getGobanY(y);
-			if (canvasRect.contain(x, y)) {
-				cursor.x = x;
-				cursor.y = y;
+		if (goban == null) {
+			pressedPoint = null;
+		} else {
+			pressedPoint = getGobanPoint(x, y);
+		}
+	}
+	
+	protected void pointerReleased(int x, int y) {
+		super.pointerReleased(x, y);
+		if (goban == null || pressedPoint == null) {
+			return;
+		}
+		Point releasedPoint = getGobanPoint(x, y);
+		if (releasedPoint.equals(pressedPoint)) {
+			if (canvasRect.contains(pressedPoint)) {
+				cursor.x = pressedPoint.x;
+				cursor.y = pressedPoint.y;
 				doMoveAtCursor();
 				repaint();
 			}
+		} else {
+			int dx = pressedPoint.x - releasedPoint.x;
+			int dy = pressedPoint.y - releasedPoint.y;
+			canvasRect.move(dx, dy);
+			adjustCanvasRectToGobanBorders();
+			repaint();
 		}
+		pressedPoint = null;
 	}
 
 	private void drawMessages(Graphics g) {
@@ -310,6 +330,12 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 	private int getGobanY(int canvasY) {
 		return (canvasY - yOffset) / cellSize + canvasRect.minY;
 	}
+	
+	private Point getGobanPoint(int canvasX, int canvasY) {
+		int gobanX = getGobanX(canvasX);
+		int gobanY = getGobanY(canvasY);
+		return new Point(gobanX, gobanY);
+	}
 
 	private void drawLabels(Graphics g, Node current) {
 		g.setFont(boardFont);
@@ -317,7 +343,7 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 		if (labels != null) {
 			for (int i = 0; i < labels.size(); ++i) {
 				Label lbl = (Label) labels.elementAt(i);
-				if (!canvasRect.contain(lbl.getPoint())) {
+				if (!canvasRect.contains(lbl.getPoint())) {
 					continue;
 				}
 
@@ -404,7 +430,7 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			Node n = (Node) nextMoves.elementAt(i);
 			MoveAction action = (MoveAction) n.getAction();
 
-			if (action.isPass() || !canvasRect.contain(action.getPoint())) {
+			if (action.isPass() || !canvasRect.contains(action.getPoint())) {
 				continue;
 			}
 
@@ -455,7 +481,7 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 		if (hoshi != null) {
 			for (int i = 0; i < hoshi.length; ++i) {
 				Point pt = hoshi[i];
-				if (canvasRect.contain(pt)) {
+				if (canvasRect.contains(pt)) {
 					fillCircle(g, pt.x, pt.y, stoneRadius / 3);
 				}
 			}

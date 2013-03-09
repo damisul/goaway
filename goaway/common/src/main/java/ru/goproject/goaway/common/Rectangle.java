@@ -17,8 +17,6 @@
  */
 package ru.goproject.goaway.common;
 
-import ru.goproject.goaway.common.Point;
-
 public class Rectangle {
 	public int minX;
 	public int maxX;
@@ -82,11 +80,11 @@ public class Rectangle {
 		return maxY - minY + 1;
 	}
 	
-	public boolean contain(Point pt) {
-		return contain(pt.x, pt.y);
+	public boolean contains(Point pt) {
+		return contains(pt.x, pt.y);
 	}
 	
-	public boolean contain(int x, int y) {
+	public boolean contains(int x, int y) {
 		return x >= minX && y >= minY && x <= maxX && y <= maxY;
 	}
 	
