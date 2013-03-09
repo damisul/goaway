@@ -647,11 +647,28 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			goban = problemNavigator.getGoban();
 			gobanSize = goban.getSize();
 
-			Rectangle problemDimensions = getProblemRectangle(p, 2);
-			cursor = problemDimensions.getCenter();
+			Rectangle problemRect = getProblemRectangle(p, 2);
+			cursor = problemRect.getCenter();
 
-			zoom(getCellSize(problemDimensions));
 
+			int newCellSize = getCellSize(problemRect);
+			initCanvasPropertiesForCellSize(newCellSize);
+			
+			// Some dimensions of problemRect could be too small for screen
+			// so we increase it to max available value
+			canvasRect = new Rectangle(problemRect);
+			if (canvasRect.getWidth() < canvasWidthInCells) {
+				int dx = (canvasWidthInCells - canvasRect.getWidth())/2;
+				canvasRect.minX = canvasRect.minX - dx;
+				canvasRect.maxX = canvasRect.maxX + canvasWidthInCells - canvasRect.getWidth();
+			}
+			if (canvasRect.getHeight() < canvasHeightInCells) {
+				int dy = (canvasHeightInCells - canvasRect.getHeight())/2;
+				canvasRect.minY = canvasRect.minY - dy;
+				canvasRect.maxY = canvasRect.maxY + canvasHeightInCells - canvasRect.getHeight();
+			}
+			adjustCanvasRectToGobanBorders();
+			
 			hoshi = getStarPoints(gobanSize);
 			commandAction(cmdHideHints, this);
 			initNode();
@@ -669,16 +686,16 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			zoom(cellSize);
 		}
 	}
-
-	private int getCellSize(Rectangle rect) {
+	
+	private int getCellSize(Rectangle problemRect) {
 		int width = getWidth(),
 			height = getHeight() - NOTIFICATION_AREA_HEIGHT;
-		int dx = width / (rect.getWidth()),
-			dy = height / (rect.getHeight());
+		int dx = width / (problemRect.getWidth()),
+			dy = height / (problemRect.getHeight());
 		return dx < dy ? dx : dy;
 	}
-
-	private void zoom(int newCellSize) {
+	
+	private void initCanvasPropertiesForCellSize(int newCellSize) {
 		if (newCellSize < MIN_CELLSIZE) {
 			cellSize = MIN_CELLSIZE;
 		} else if (newCellSize > MAX_CELLSIZE) {
@@ -717,12 +734,12 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 		if (canvasHeightInCells > gobanSize) {
 			canvasHeightInCells = gobanSize;
 		}
-		canvasRect = new Rectangle();
-		canvasRect.minX = cursor.x - canvasWidthInCells / 2;
-		canvasRect.maxX = canvasRect.minX + canvasWidthInCells - 1;
-		canvasRect.minY = cursor.y - canvasHeightInCells / 2;
-		canvasRect.maxY = canvasRect.minY + canvasHeightInCells - 1;
-
+		
+		xOffset = (width - cellSize * canvasWidthInCells) / 2;
+		yOffset = (height - cellSize * canvasHeightInCells) / 2;
+	}
+	
+	private void adjustCanvasRectToGobanBorders() {
 		int dx = 0,
 			dy = 0;
 		if (canvasRect.minX < 0) {
@@ -736,8 +753,16 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			dy = gobanSize - 1 - canvasRect.maxY;
 		}
 		canvasRect.move(dx, dy);
-		xOffset = (width - cellSize * canvasWidthInCells) / 2;
-		yOffset = (height - cellSize * canvasHeightInCells) / 2;
+	}
+
+	private void zoom(int newCellSize) {
+		initCanvasPropertiesForCellSize(newCellSize);
+		canvasRect = new Rectangle();
+		canvasRect.minX = cursor.x - canvasWidthInCells / 2;
+		canvasRect.maxX = canvasRect.minX + canvasWidthInCells - 1;
+		canvasRect.minY = cursor.y - canvasHeightInCells / 2;
+		canvasRect.maxY = canvasRect.minY + canvasHeightInCells - 1;
+		adjustCanvasRectToGobanBorders();
 	}
 
 	private void moveCursor(int dX, int dY) {
@@ -754,9 +779,9 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 		return collection.size();
 	}
 
-	private static Rectangle getProblemRectangle(Problem p, int margin) {
+	private Rectangle getProblemRectangle(Problem p, int margin) {
 		int gobanSize = p.getSize();
-		Rectangle problemDimensions = new Rectangle(
+		Rectangle problemRect = new Rectangle(
 			Integer.MAX_VALUE,
 			Integer.MAX_VALUE,
 			Integer.MIN_VALUE,
@@ -769,50 +794,50 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			if (labels != null) {
 				for (int j = 0; j < labels.size(); ++j) {
 					Label l = (Label) labels.elementAt(j);
-					problemDimensions.resizeToIncludePoint(l.getPoint());
+					problemRect.resizeToIncludePoint(l.getPoint());
 				}
 			}
 			if (n.getAction() instanceof EditorAction) {
 				EditorAction a = (EditorAction) n.getAction();
 				Vector stones = a.getAddedBlackStones();
 				for (int j = 0; j < stones.size(); ++j) {
-					problemDimensions.resizeToIncludePoint((Point) stones.elementAt(j));
+					problemRect.resizeToIncludePoint((Point) stones.elementAt(j));
 				}
 				stones = a.getAddedWhiteStones();
 				for (int j = 0; j < stones.size(); ++j) {
-					problemDimensions.resizeToIncludePoint((Point) stones.elementAt(j));
+					problemRect.resizeToIncludePoint((Point) stones.elementAt(j));
 				}
 			}
 			if (n.getAction() instanceof MoveAction) {
 				MoveAction a = (MoveAction) n.getAction();
-				problemDimensions.resizeToIncludePoint(a.getPoint());
+				problemRect.resizeToIncludePoint(a.getPoint());
 			}
 		}
 
-		if (problemDimensions.minX <= margin) {
-			problemDimensions.minX = 0;
+		if (problemRect.minX <= margin) {
+			problemRect.minX = 0;
 		} else {
-			problemDimensions.minX -= margin;
+			problemRect.minX -= margin;
 		}
 
-		if (problemDimensions.maxX > gobanSize - margin - 1) {
-			problemDimensions.maxX = gobanSize - 1;
+		if (problemRect.maxX > gobanSize - margin - 1) {
+			problemRect.maxX = gobanSize - 1;
 		} else {
-			problemDimensions.maxX += margin;
+			problemRect.maxX += margin;
 		}
 
-		if (problemDimensions.minY <= margin) {
-			problemDimensions.minY = 0;
+		if (problemRect.minY <= margin) {
+			problemRect.minY = 0;
 		} else {
-			problemDimensions.minY -= margin;
+			problemRect.minY -= margin;
 		}
 
-		if (problemDimensions.maxY > gobanSize - margin - 1) {
-			problemDimensions.maxY = gobanSize - 1;
+		if (problemRect.maxY > gobanSize - margin - 1) {
+			problemRect.maxY = gobanSize - 1;
 		} else {
-			problemDimensions.maxY += margin;
+			problemRect.maxY += margin;
 		}
-		return problemDimensions;
+		return problemRect;
 	}
 
 	private static Point[] getStarPoints(int gobanSize) {
