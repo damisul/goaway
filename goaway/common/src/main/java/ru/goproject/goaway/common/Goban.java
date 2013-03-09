@@ -48,7 +48,7 @@ public class Goban {
 	}
 
 	public byte getPointColor(Point pt) {
-		return getPointColor(pt.getX(), pt.getY());
+		return getPointColor(pt.x, pt.y);
 	}
 
 	private void setPointColor(int x, int y, byte color) {
@@ -56,7 +56,7 @@ public class Goban {
 	}
 
 	private void setPointColor(Point pt, byte color) {
-		setPointColor(pt.getX(), pt.getY(), color);
+		setPointColor(pt.x, pt.y, color);
 	}
 
 	/**
@@ -64,8 +64,8 @@ public class Goban {
 	 */
 	public Vector getNeighbours(Point pt, byte color) {
 		Vector result = new Vector(4);
-		int x = pt.getX(),
-			y = pt.getY();
+		int x = pt.x,
+			y = pt.y;
 		if (x < size - 1) {
 			if (getPointColor(x + 1, y) == color) {
 				result.addElement(new Point(x + 1, y));
@@ -106,7 +106,7 @@ public class Goban {
 		points = getNeighbours(point, opponentColor);
 		for (int i = 0; i < points.size(); ++i) {
 			Point pt = (Point)points.elementAt(i);
-			Group g = new Group(this, pt.getX(), pt.getY());
+			Group g = new Group(this, pt.x, pt.y);
 			// если у одной из групп противника, прилегающих к выбранному пункту доски
 			// осталось только одно даме, то ход разрешен, так как он приведет к снятию этой
 			// группы противника
@@ -119,7 +119,7 @@ public class Goban {
 		points = getNeighbours(point, color);
 		for (int i = 0; i < points.size(); ++i) {
 			Point pt = (Point)points.elementAt(i);
-			Group g = new Group(this, pt.getX(), pt.getY());
+			Group g = new Group(this, pt.x, pt.y);
 			if (g.getGroupDame(this) > 1) {
 				return true;
 			}
@@ -137,8 +137,8 @@ public class Goban {
 		Vector eatenStones = new Vector();
 		byte opponentColor = color == STONE_BLACK ? STONE_WHITE : STONE_BLACK;
 
-		int x = stone.getX(),
-			y = stone.getY();
+		int x = stone.x,
+			y = stone.y;
 		
 		if (getPointColor(stone) != STONE_NONE) {
 			throw new GoAwayException("Couldn't play at the existing stone");
