@@ -686,7 +686,7 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			goban = problemNavigator.getGoban();
 			gobanSize = goban.getSize();
 
-			Rectangle problemRect = getProblemRectangle(p, 2);
+			Rectangle problemRect = problem.getFullRectangle(2);
 			cursor = problemRect.getCenter();
 
 
@@ -818,66 +818,5 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 
 	public int getCollectionSize() {
 		return collection.size();
-	}
-
-	private Rectangle getProblemRectangle(Problem p, int margin) {
-		int gobanSize = p.getSize();
-		Rectangle problemRect = new Rectangle(
-			Integer.MAX_VALUE,
-			Integer.MAX_VALUE,
-			Integer.MIN_VALUE,
-			Integer.MIN_VALUE
-		);
-		Vector nodes = p.getNodeList();
-		for (int i = 0; i < nodes.size(); ++i) {
-			Node n = (Node) nodes.elementAt(i);
-			Vector labels = n.getLabels();
-			if (labels != null) {
-				for (int j = 0; j < labels.size(); ++j) {
-					Label l = (Label) labels.elementAt(j);
-					problemRect.resizeToIncludePoint(l.getPoint());
-				}
-			}
-			if (n.getAction() instanceof EditorAction) {
-				EditorAction a = (EditorAction) n.getAction();
-				Vector stones = a.getAddedBlackStones();
-				for (int j = 0; j < stones.size(); ++j) {
-					problemRect.resizeToIncludePoint((Point) stones.elementAt(j));
-				}
-				stones = a.getAddedWhiteStones();
-				for (int j = 0; j < stones.size(); ++j) {
-					problemRect.resizeToIncludePoint((Point) stones.elementAt(j));
-				}
-			}
-			if (n.getAction() instanceof MoveAction) {
-				MoveAction a = (MoveAction) n.getAction();
-				problemRect.resizeToIncludePoint(a.getPoint());
-			}
-		}
-
-		if (problemRect.minX <= margin) {
-			problemRect.minX = 0;
-		} else {
-			problemRect.minX -= margin;
-		}
-
-		if (problemRect.maxX > gobanSize - margin - 1) {
-			problemRect.maxX = gobanSize - 1;
-		} else {
-			problemRect.maxX += margin;
-		}
-
-		if (problemRect.minY <= margin) {
-			problemRect.minY = 0;
-		} else {
-			problemRect.minY -= margin;
-		}
-
-		if (problemRect.maxY > gobanSize - margin - 1) {
-			problemRect.maxY = gobanSize - 1;
-		} else {
-			problemRect.maxY += margin;
-		}
-		return problemRect;
 	}
 }
