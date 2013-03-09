@@ -633,7 +633,7 @@ public class GobanCanvas extends Canvas implements CommandListener,ProblemsColle
 			MidletUtils.show(parent);
 		} else if (cmd == cmdZoomIn) {
 			zoom(cellSize + 2);
-		} else if (cmd == cmdZoomOut) {
+		} else if (cmd == cmdZoomOut && (canvasRect.getWidth() < gobanSize || canvasRect.getHeight() < gobanSize)) {
 			zoom(cellSize - 2);
 		}
 	}
