@@ -27,7 +27,8 @@
 	<artifactId>midlet-full</artifactId>
 	<description>GoAway.ME - midlet with filesystem support</description>
 	<properties>
-		<midlet.name>GoAway.ME</midlet.name>
+		<midlet.appname>GoAway.ME</midlet.appname>
+		<midlet.name>GoAway_ME</midlet.name>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -76,16 +77,21 @@
 					<useWtkLibs>false</useWtkLibs>
 					<proguardPreverify>true</proguardPreverify>
 					<midletVendor>Damir Sultanbekov</midletVendor>					
-					<midletName>${midlet.name}</midletName>
-					<jarfile>${midlet.name}-${project.version}</jarfile>
-					<jadfile>${midlet.name}-${project.version}</jadfile>
+					<midletName>${midlet.appname}</midletName>
+					<jarfile>${midlet.appname}-${project.version}</jarfile>
+					<jadfile>${midlet.appname}-${project.version}</jadfile>
+					<jadAttributes>
+						<MIDlet-Permissions>javax.microedition.io.Connector.file.read</MIDlet-Permissions>
+						<MIDlet-Touch-Support>True</MIDlet-Touch-Support>
+						<MIDlet-Description>Midlet for solving go problems</MIDlet-Description>
+					</jadAttributes>
 					<appendClassifier>false</appendClassifier>
 					<proguard>true</proguard>
 					<obfuscate>true</obfuscate>
 					<midlets>
 						<MIDlet>
 							<name>${midlet.name}</name>
-							<icon>icon.png</icon>
+							<icon>/icon.png</icon>
 							<class>ru.goproject.goaway.midlet.GoAwayMidlet</class>
 						</MIDlet>
 					</midlets>
