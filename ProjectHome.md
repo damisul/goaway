@@ -1,0 +1,1 @@
+Midlet for solving go (baduk, weiqi) problems on MIDP-2.0 compatible cellphones

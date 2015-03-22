@@ -1,0 +1,1 @@
+You can download latest binary from following page http://goaway.goproject.ru/download
